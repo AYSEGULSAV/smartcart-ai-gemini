@@ -4,17 +4,17 @@
   "description": "SmartCart AI - Gemini Workspace Launcher",
   "scripts": {
     "install-all": "cd backend && npm install",
-
     "dev:backend": "cd backend && npm start",
-
     "dev:agent": "cd ai-agents && npm start",
-
-    "dev": "npm run dev:backend"
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:agent\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@google/genai": "^2.3.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }
