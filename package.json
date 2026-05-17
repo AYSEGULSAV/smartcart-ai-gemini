@@ -4,7 +4,12 @@
   "description": "SmartCart AI - Gemini Workspace Launcher",
   "scripts": {
     "install-all": "cd backend && npm install",
-    "dev": "node -e \"require('child_process').exec('start http://localhost:3000')\" && cd backend && npm start"
+
+    "dev:backend": "cd backend && npm start",
+
+    "dev:agent": "cd ai-agents && npm start",
+
+    "dev": "npm run dev:backend"
   },
   "keywords": [],
   "author": "",

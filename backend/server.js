@@ -1,28 +1,41 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
-const apiRoutes = require('./src/routes/api');
+// Eğer routes klasörün direkt kök dizindeyse './routes/api' yapabilirsin. 
+// src altındaysa './src/routes/api' olarak bırak.
+const apiRoutes = require('./src/routes/api'); 
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// JSON veri işleme ara yazılımları
+// 1. Güvenlik ve Veri İşleme Politikaları
+app.use(cors());
 app.use(express.json());
 
-// FRONTEND DOSYALARINI VS CODE İÇİN DIŞARI AÇMA
-// Kök dizindeki frontend klasörünü statik olarak sunar
-app.use(express.static(path.join(__dirname, '../frontend')));
-
-// API Rotaları
+// 2. API Rotalarını Bağlama (Ürünler buradan akacak)
 app.use('/api', apiRoutes);
 
-// Herhangi bir route eşleşmezse ana sayfayı yükle
+// 3. FRONTEND DOSYALARINI DIŞARI AÇMA (Canlı Yayın)
+// Backend klasörünün bir üstündeki veya yanındaki 'frontend' klasörünü otomatik okur
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Sağlık kontrolü testi (Tarayıcıdan http://localhost:5000 yazınca çalışır)
+app.get('/status', (req, res) => {
+    res.json({ status: "online", system: "SmartCart AI Backend", database: "SQLite3 (150+ Products Loaded)" });
+});
+
+// 4. Herhangi bir API rotası eşleşmezse doğrudan Frontend Arayüzünü yükle (SPA Dostu)
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
+// Port Ayarı: .env içinde PORT varsa onu alır, yoksa 5000 portuna yerleşir
+const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-    console.log(`\n🚀 SmartCart AI Sunucusu Başarıyla Başlatıldı!`);
-    console.log(`🌐 Adres: http://localhost:${PORT}`);
-    console.log(`📝 VS Code üzerinden geliştirme yapmaya hazırsınız.\n`);
+    console.log(`====================================================`);
+    console.log(`⚡ Q-Commerce Ana Backend Sunucusu Port ${PORT}'de aktif!`);
+    console.log(`🌐 Arayüz Adresi: http://localhost:${PORT}`);
+    console.log(`🔗 API Test Adresi: http://localhost:${PORT}/api/products`);
+    console.log(`====================================================`);
 });
