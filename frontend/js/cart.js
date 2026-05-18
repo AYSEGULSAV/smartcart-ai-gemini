@@ -68,8 +68,64 @@ function updateCartUI() {
     });
     document.getElementById('cart-total').innerText = `${totalPrice.toFixed(2)} TL`;
 }
+// 🛒 Siparişi Kesin Olarak Tamamlama ve Tabloya Anlık Gönderme Fonksiyonu
+function checkout() {
+    if (!cart || cart.length === 0) {
+        alert("Sepetiniz boş!");
+        return;
+    }
 
-// Global kapsam tanımlamaları
+    // 🌟 orders.js'deki mantıkla birebir aynı kullanıcı adını buluyoruz
+    let userName = 'default_user';
+    let userStorage = localStorage.getItem('userName') || localStorage.getItem('username') || localStorage.getItem('user');
+    if (userStorage) {
+        if (userStorage.startsWith('{')) {
+            try {
+                const parsed = JSON.parse(userStorage);
+                userName = parsed.name || parsed.username || 'default_user';
+            } catch(e) { userName = 'default_user'; }
+        } else {
+            userName = userStorage;
+        }
+    }
+
+    const userOrdersKey = `orders_${userName}`;
+    let userOrders = JSON.parse(localStorage.getItem(userOrdersKey)) || [];
+
+    const newOrder = {
+        id: '#SC-' + Math.floor(10000 + Math.random() * 90000),
+        date: new Date().toLocaleString('tr-TR', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' }),
+        timestamp: Date.now(),
+        items: [...cart],
+        total: cart.reduce((acc, obj) => acc + (obj.price * obj.quantity), 0),
+        status: 'Hazırlanıyor'
+    };
+
+    userOrders.unshift(newOrder);
+    localStorage.setItem(userOrdersKey, JSON.stringify(userOrders));
+
+    // Sepeti temizle
+    cart = [];
+    if (typeof saveAndRefreshCart === 'function') saveAndRefreshCart();
+
+    // Sayfayı değiştir
+    if (typeof switchPage === 'function') {
+        switchPage('orders');
+    } else {
+        document.querySelectorAll('.page-section').forEach(s => s.classList.add('hidden'));
+        document.getElementById('page-orders').classList.remove('hidden');
+    }
+
+    // Tabloyu zorunlu güncelle
+    if (typeof renderOrders === 'function') {
+        renderOrders();
+    }
+}
+
+
+
+// Global kapsama açmayı unutmayalım
+window.checkout = checkout;
 window.addToCart = addToCart;
 window.updateQuantity = updateQuantity;
 window.saveAndRefreshCart = saveAndRefreshCart;

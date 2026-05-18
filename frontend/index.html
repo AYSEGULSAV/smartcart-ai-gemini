@@ -110,9 +110,7 @@
                             <span>Ara Toplam</span>
                             <span id="cart-total">0.00 TL</span>
                         </div>
-                        <button onclick="triggerAiAssistant()" class="w-full mb-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-md">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Asistanı Tetikle
-                        </button>
+
                         <button onclick="checkout()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 rounded-xl transition">
                             Siparişi Tamamla
                         </button>
@@ -159,33 +157,26 @@
                 </div>
             </div>
         </section>
+<section id="page-orders" class="page-section hidden">
+    <h2 class="text-2xl font-bold text-slate-900 mb-2">Sipariş Geçmişim</h2>
+    <p class="text-slate-500 text-sm mb-6">Daha önce verdiğiniz akıllı siparişlerin dökümü</p>
 
-        <section id="page-orders" class="page-section hidden">
-            <h2 class="text-2xl font-bold text-slate-900 mb-2">Sipariş Geçmişim</h2>
-            <p class="text-slate-500 text-sm mb-6">Daha önce verdiğiniz akıllı siparişlerin dökümü</p>
-
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold uppercase text-slate-500 tracking-wider">
-                            <th class="p-4">Sipariş ID</th>
-                            <th class="p-4">Tarih</th>
-                            <th class="p-4">Tutar</th>
-                            <th class="p-4">Durum</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orders-history-rows" class="divide-y divide-slate-100 text-sm text-slate-600">
-                        <tr>
-                            <td class="p-4 font-bold text-slate-900">#SC-9482</td>
-                            <td class="p-4">Bugün, 14:20</td>
-                            <td class="p-4">420.50 TL</td>
-                            <td class="p-4"><span class="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs font-medium rounded-full">Teslim Edildi</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold uppercase text-slate-500 tracking-wider">
+                    <th class="p-4">Sipariş ID</th>
+                    <th class="p-4">Tarih</th>
+                    <th class="p-4">Tutar</th>
+                    <th class="p-4">Durum</th>
+                </tr>
+            </thead>
+            <!-- 🌟 İÇİNİ TAMAMEN BOŞALTTIK, JAVASCRIPT ANINDA YAZACAK -->
+            <tbody id="orders-history-rows" class="divide-y divide-slate-100 text-sm text-slate-600">
+            </tbody>
+        </table>
+    </div>
+</section>
         <section id="page-ai-hub" class="page-section hidden">
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start h-[calc(100vh-12rem)]">
                 
@@ -280,9 +271,10 @@
         <script src="js/config.js"></script>
         <script src="js/products.js"></script>
         <script src="js/cart.js"></script>
-        <script src="js/auth.js"></script>
         <script src="js/navigation.js"></script>
         <script src="js/ai-hub.js"></script>
+        <script src="js/auth.js"></script>
+        <script src="js/order.js"></script>
 </body>
 
 
