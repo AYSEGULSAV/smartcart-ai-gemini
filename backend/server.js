@@ -4,6 +4,7 @@ const path = require('path');
 // Eğer routes klasörün direkt kök dizindeyse './routes/api' yapabilirsin. 
 // src altındaysa './src/routes/api' olarak bırak.
 const apiRoutes = require('./src/routes/api'); 
+const authRoutes = require('./src/routes/auth'); 
 require('dotenv').config();
 
 const app = express();
@@ -11,10 +12,11 @@ const app = express();
 // 1. Güvenlik ve Veri İşleme Politikaları
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // 2. API Rotalarını Bağlama (Ürünler buradan akacak)
 app.use('/api', apiRoutes);
-
+app.use('/auth', authRoutes);
 // 3. FRONTEND DOSYALARINI DIŞARI AÇMA (Canlı Yayın)
 // Backend klasörünün bir üstündeki veya yanındaki 'frontend' klasörünü otomatik okur
 app.use(express.static(path.join(__dirname, '../frontend')));

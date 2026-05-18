@@ -12,6 +12,17 @@ const dbPath = path.join(dataDir, 'database.sqlite');
 const db = new sqlite3.Database(dbPath);
 
 db.serialize(() => {
+
+    // ==========================================
+    // EKLEME: Kullanıcılar Tablosunu Oluştur (Mevcut yapıya dokunulmadı)
+    // ==========================================
+    db.run(`CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
     // 1. Ürünler Tablosunu Oluştur
     db.run(`CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
