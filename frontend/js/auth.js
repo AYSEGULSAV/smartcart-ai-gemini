@@ -33,6 +33,7 @@ function clearAuthForms() {
 }
 
 // Kayıt ve Giriş İsteklerini Yöneten Fonksiyon
+// Kayıt ve Giriş İsteklerini Yöneten Fonksiyon
 async function handleAuth(event, type) {
     event.preventDefault();
     
@@ -64,28 +65,61 @@ async function handleAuth(event, type) {
         const result = await response.json();
 
         if (result.success) {
-            alert(result.message);
             if (type === 'login') {
                 localStorage.setItem('token', result.token);
                 localStorage.setItem('userName', result.user.name);
                 
-                // 🌟 ÇÖZÜM 2: Başarılı giriş sonrasında form alanlarını temizle ve kapat
                 clearAuthForms(); 
                 checkAuthStatus();
                 closeAuthModal();
+                
+                // 🌟 ALERT YERİNE: Sol altta şık bir hoş geldin bildirimi göster
+                showToast(`👋 Hoş geldiniz, ${result.user.name}!`);
             } else {
-                // 🌟 ÇÖZÜM 2: Başarılı kayıt sonrası form temizlenip login formuna geçiş yapar
+                // 🌟 ALERT YERİNE: Giriş yapabilirsiniz mesajı ver ve login formuna at
                 clearAuthForms();
                 toggleAuthForm('login'); 
+                
+                // Kayıt formundaki bilgilendirme yazısını güncelle
+                const loginTitle = document.querySelector('#login-form-container h2');
+                if (loginTitle) {
+                    loginTitle.innerHTML = 'Giriş Yap <br><span class="text-xs font-normal text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md block mt-1 border border-emerald-200">🎉 Kayıt başarılı! Giriş yapabilirsiniz.</span>';
+                }
             }
         } else {
-            alert(result.message || "Bir hata oluştu.");
+            alert(result.message || "Bir hata oluştu."); // Hatalar için alert kalabilir veya özelleştirilebilir
         }
     } catch (error) {
         console.error("Auth Hatası:", error);
         alert("Sunucuya bağlanılamadı.");
     }
 }
+
+// 🌟 YENİ: Ekranda küçük modern bildirim penceresi (Toast) gösterme fonksiyonu
+function showToast(message) {
+    // Varsa eski toast'ı temizle
+    document.getElementById('custom-toast')?.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'custom-toast';
+    // Sol alt köşede şık, yeşil ağırlıklı modern bir tasarım
+    toast.className = 'fixed bottom-5 left-5 bg-slate-900 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-xl z-50 flex items-center gap-2 border border-slate-800 transition-all duration-300 transform translate-y-10 opacity-0';
+    toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> <span>${message}</span>`;
+    
+    document.body.appendChild(toast);
+
+    // Animasyonla yukarı kaydırarak göster
+    setTimeout(() => {
+        toast.classList.remove('translate-y-10', 'opacity-0');
+    }, 10);
+
+    // 3 saniye sonra otomatik kaldır
+    setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0');
+        setTimeout(() => { toast.remove(); }, 300);
+    }, 3000);
+}
+
 
 // Kullanıcı Giriş Durumunu Kontrol Eden ve Arayüzü Güncelleyen Fonksiyon
 function checkAuthStatus() {
@@ -125,12 +159,13 @@ function checkAuthStatus() {
 }
 
 // Oturumu Tamamen Sonlandıran ve Ana Sayfaya Yönlendiren Fonksiyon
+// Oturumu Tamamen Sonlandıran ve Ana Sayfaya Yönlendiren Fonksiyon
 function handleLogout() {
     // 1. Tarayıcı hafızasındaki token ve kullanıcı verilerini tamamen temizle
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     
-    // 🌟 ÇÖZÜM 1: Çıkış yapıldığında sepeti hem hafızadan hem de ekrandan tamamen temizle
+    // Çıkış yapıldığında sepeti hem hafızadan hem de ekrandan tamamen temizle
     localStorage.removeItem('smartcart_cart'); 
     cart = [];
     updateCartUI();
@@ -140,12 +175,12 @@ function handleLogout() {
     hubSavedInventory = [];
     currentHubMissingItems = [];
 
-    alert("Oturumunuz güvenli bir şekilde sonlandırıldı.");
+    // 🌟 ALERT YERİNE: Modern bildirim göster
+    showToast("🚪 Oturumunuz sonlandırıldı. Ana sayfaya yönlendiriliyorsunuz...");
     
-    // 2. Arayüzü güncelle (Bu fonksiyon otomatik olarak kullanıcıyı 'welcome' sayfasına fırlatacak)
+    // 2. Arayüzü güncelle ve kullanıcıyı ana sayfaya (welcome) fırlat
     checkAuthStatus();
 }
-
 // Global kapsam tanımlamaları
 window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
@@ -153,3 +188,4 @@ window.toggleAuthForm = toggleAuthForm;
 window.handleAuth = handleAuth;
 window.checkAuthStatus = checkAuthStatus;
 window.handleLogout = handleLogout;
+window.showToast = showToast;

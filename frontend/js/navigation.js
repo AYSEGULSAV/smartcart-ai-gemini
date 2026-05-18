@@ -2,9 +2,9 @@
 function switchPage(pageId) {
     const token = localStorage.getItem('token');
     
-    // Eğer kullanıcı giriş yapmadıysa ve market/sepet/orders/ai-hub'a gitmeye çalışıyorsa engelle
     if (!token && pageId !== 'welcome') {
-        alert("Bu sayfayı görüntülemek için lütfen önce giriş yapın.");
+        if (typeof showToast === 'function') showToast("🔒 Lütfen önce giriş yapın.");
+        else alert("Bu sayfayı görüntülemek için lütfen önce giriş yapın.");
         openAuthModal('login');
         return;
     }
@@ -20,7 +20,13 @@ function switchPage(pageId) {
     if (targetPage) {
         targetPage.classList.remove('hidden');
     }
+
+    // 🌟 YENİ: Kullanıcı Siparişlerim sayfasına geçtiyse listeyi dinamik olarak hesapla ve yenile
+    if (pageId === 'orders' && typeof renderOrders === 'function') {
+        renderOrders();
+    }
 }
+
 
 // 🛒 Eksikleri Gerçek Alışveriş Sepetine Yükleme (MANUEL GÜNCELLEME UYUMLU)
 function addHubMissingToCart() {
