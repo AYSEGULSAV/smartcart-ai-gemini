@@ -1,9 +1,7 @@
-// 📦 Sipariş Yönetim Modülü
 function renderOrders() {
     const tableBody = document.getElementById('orders-history-rows');
     if (!tableBody) return;
 
-    // Kullanıcı adını güvenli al
     let userName = localStorage.getItem('userName') || localStorage.getItem('username') || localStorage.getItem('user') || 'default_user';
     if (userName.startsWith('{')) {
         try { userName = JSON.parse(userName).name || 'default_user'; } catch(e) { userName = 'default_user'; }
@@ -59,9 +57,6 @@ function renderOrders() {
     });
 }
 
-
-
-// Canlı izleme döngüsü
 setInterval(() => {
     const ordersPage = document.getElementById('page-orders');
     if (ordersPage && !ordersPage.classList.contains('hidden')) {

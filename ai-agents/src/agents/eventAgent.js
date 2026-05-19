@@ -1,5 +1,4 @@
 async function processEventAgent(messages) {
-    // Sadece bu ajanın sistem talimatını döner, API'ye istek ATMAZ
     return `
     [Agent: EventAgent]
     Kullanıcının şu ana kadarki chat geçmişini incele: ${JSON.stringify(messages)}.

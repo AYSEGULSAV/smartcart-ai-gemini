@@ -3,10 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../config/db');
+require('dotenv').config();
 
-const JWT_SECRET = 'smartcart_gizli_anahtar_123'; // Gerçek projede bunu .env dosyasında saklamalısın
+const JWT_SECRET = process.env.JWT_SECRET
 
-// 1. KAYIT OLMA (REGISTER)
 router.post('/register', (req, res) => {
     const { name, email, password } = req.body;
 
@@ -14,16 +14,13 @@ router.post('/register', (req, res) => {
         return res.status(400).json({ success: false, message: "Lütfen tüm alanları doldurun." });
     }
 
-    // E-posta adresi önceden alınmış mı kontrol et
     db.get("SELECT id FROM users WHERE email = ?", [email], (err, user) => {
         if (err) return res.status(500).json({ success: false, error: err.message });
         if (user) return res.status(400).json({ success: false, message: "Bu e-posta adresi zaten kullanımda." });
 
-        // Şifreyi güvenli bir şekilde hashle
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
 
-        // Kullanıcıyı veritabanına ekle
         const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
         db.run(sql, [name, email, hashedPassword], function(err) {
             if (err) return res.status(500).json({ success: false, error: err.message });
@@ -33,7 +30,6 @@ router.post('/register', (req, res) => {
     });
 });
 
-// 2. GİRİŞ YAPMA (LOGIN)
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
 
@@ -45,11 +41,9 @@ router.post('/login', (req, res) => {
         if (err) return res.status(500).json({ success: false, error: err.message });
         if (!user) return res.status(404).json({ success: false, message: "Kullanıcı bulunamadı." });
 
-        // Şifre eşleşmesini kontrol et
         const isMatch = bcrypt.compareSync(password, user.password);
         if (!isMatch) return res.status(400).json({ success: false, message: "Hatalı şifre girdiniz." });
 
-        // Kullanıcıya özel JWT Token üret
         const token = jwt.sign({ id: user.id, name: user.name }, JWT_SECRET, { expiresIn: '1d' });
 
         res.json({
@@ -59,7 +53,6 @@ router.post('/login', (req, res) => {
             user: { id: user.id, name: user.name, email: user.email }
         });
         if (typeof loadCatalogMenus === 'function') {
-            // Kataloğu yeni kullanıcı ID'siyle backend'den sıfırdan çekmesi için tetikliyoruz
             loadCatalogMenus(); 
         }
     });

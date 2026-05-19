@@ -1,22 +1,14 @@
-// 📦 Kampanyalar ve Menü Kataloğu Durum Yönetimi
 window.allCatalogMenus = []; 
-window.activeMenuId = null;        // Aşağı doğru açık olan menünün ID'si
-window.selectedCatalogMenu = null;  // İşlem yapılan aktif kopyanın nesnesi
+window.activeMenuId = null;
+window.selectedCatalogMenu = null; 
 
-/**
- * 🔄 SQLITE / JSON DB VERİ ÇEKME NOKTASI
- * config.js içindeki BACKEND_API değişkenini kullanır.
- */
 async function loadCatalogMenus() {
     try {
-        // 💡 1. Oturum açmış kullanıcının ID'sini esnek bir şekilde buluyoruz
-        // 1. Önce token'ı alıyoruz
         const token = localStorage.getItem('token');
         let activeUserId = 0;
 
         if (token) {
             try {
-                // 2. JWT'nin ortasındaki şifresiz payload kısmını base64 ile çözüyoruz
                 const base64Url = token.split('.')[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                 const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
@@ -24,19 +16,16 @@ async function loadCatalogMenus() {
                 ).join(''));
                 
                 const decoded = JSON.parse(jsonPayload);
-                // 3. Token içindeki ID'yi yakalıyoruz
                 activeUserId = decoded.id || decoded.userId || decoded.user?.id || decoded.sub || 0;
             } catch (e) {
                 console.error("Token deşifre edilemedi:", e);
             }
         }
 
-        // 4. Eğer üstteki token çözme işleminden ID gelmediyse, senin yazdığın akıllı fallback yapısı devreye girsin:
         if (!activeUserId) {
             const userObj = JSON.parse(localStorage.getItem('user')) || JSON.parse(localStorage.getItem('currentUser')) || {};
             activeUserId = userObj.id || userObj.userId || localStorage.getItem('userId') || localStorage.getItem('user_id') || 0;
         }
-        // 🎯 2. config.js'den gelen BACKEND_API adresinin sonuna query string olarak userId ekliyoruz
         const response = await fetch(`${BACKEND_API}/menus?userId=${activeUserId}`); 
         
         if (!response.ok) throw new Error("Veritabanından menü verileri çekilemedi.");
@@ -52,9 +41,6 @@ async function loadCatalogMenus() {
     }
 }
 
-/**
- * 📜 MENÜLERİ KART OLARAK LİSTELEYEN MOTOR
- */
 function renderMenusCatalogList() {
     const catalogContainer = document.getElementById('hub-menus-catalog-list');
     if (!catalogContainer) return;
@@ -75,23 +61,23 @@ function renderMenusCatalogList() {
             isOpen ? 'border-teal-500 shadow-xl ring-1 ring-teal-500/20' : 'border-slate-200 hover:border-slate-300 shadow-sm'
         }`;
         
-        // Menünün içerik başlangıç toplam fiyatını hesapla
         let initialTotal = menu.ingredients.reduce((acc, curr) => acc + (parseFloat(curr.price) * (parseInt(curr.quantity) || 1)), 0);
 
-    // Önce bu menünün daha önce beğenilip beğenilmediğini localStorage'dan kontrol ediyoruz
     const isMenuLikedBefore = menu.isLiked === true || menu.isLiked === 1 || menu.isLiked === 'true';
-    // ❤️ RENK VE SİMGE DÜZELTMESİ:
-    // Beğenildiyse: Dolu kalp (fa-solid) ve canlı kırmızı (text-rose-500)
-    // Beğenilmediyse: Çizgisel kalp (fa-regular) ve belirgin gri-rose efekti (text-slate-500)
+
     const outerHeartClass = isMenuLikedBefore 
         ? 'fa-solid fa-heart text-rose-500' 
-        : 'fa-regular fa-heart text-slate-300 group-hover:text-rose-400';    // Butonun dış çerçeve ve arka plan renkleri (Açık arka plana uygun hale getirildi)
+        : 'fa-regular fa-heart text-slate-300 group-hover:text-rose-400';  
     const outerBtnClass = isMenuLikedBefore 
         ? 'text-rose-600 border-rose-200 bg-rose-50/80 shadow-sm' 
         : 'text-slate-600 bg-white hover:bg-rose-50 hover:border-rose-200 border-slate-200 shadow-sm';
     menuCard.innerHTML = `
         <div onclick="toggleMenuDetail(${menu.id})" class="p-5 flex justify-between items-center cursor-pointer select-none bg-slate-50/50 hover:bg-slate-50 transition">
-            <div class="space-y-1">
+            <div class="w-32 h-32 flex-shrink-0 overflow-hidden border-r border-slate-100">
+                <img src="${menu.image_url}" alt="${menu.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+            </div>
+
+            <div class="space-y-1 flex-1 pl-4 pr-5 py-3">
                 <div class="flex items-center gap-3">
                     <h3 class="text-lg font-bold text-slate-800">${menu.title}</h3>
                     
@@ -127,9 +113,6 @@ function renderMenusCatalogList() {
     });
 }
 
-/**
- * 🎛️ DETAY PANELİNİ AÇMA / KAPAMA
- */
 window.toggleMenuDetail = function(menuId) {
     if (window.activeMenuId === menuId) {
         window.activeMenuId = null; 
@@ -141,14 +124,10 @@ window.toggleMenuDetail = function(menuId) {
     renderMenusCatalogList();
 };
 
-/**
- * 🛠️ DETAY PANELİ TASARIMI VE ARTI-EKSİ BUTONLARI
- */
 function renderMenuDetailSection(menu) {
     let currentTotal = 0;
     let ingredientsHTML = '';
     
-    // 1. MALZEME DÖNGÜSÜ: Güvenli 'menu' parametresi üzerinden dönüyoruz
     if (menu.ingredients && menu.ingredients.length > 0) {
         menu.ingredients.forEach((item, index) => {
             const price = parseFloat(item.price) || 0;
@@ -184,7 +163,6 @@ function renderMenuDetailSection(menu) {
         });
     }
 
-    // 2. YORUM DÖNGÜSÜ: Yine güvenli 'menu' parametresini okuyoruz
     let commentsHTML = '';
     (menu.comments || []).forEach(c => {
         commentsHTML += `
@@ -194,7 +172,6 @@ function renderMenuDetailSection(menu) {
         `;
     });
 
-    // 3. ŞEF TARİFİ MOTORU: Metni noktalardan bölüp numaralı liste haline getiriyoruz
     const rawRecipe = menu.recipe || 'Tarif adımları yakında eklenecektir.';
     const recipeSteps = rawRecipe
         .split('.')
@@ -212,7 +189,6 @@ function renderMenuDetailSection(menu) {
         </li>
     `).join('');
 
-    // 4. TEK PARÇA TEMİZ HTML ÇIKTISI
     return `
         <div class="bg-slate-900 text-white p-6 border-t border-slate-800 space-y-6">
             
@@ -267,12 +243,7 @@ function renderMenuDetailSection(menu) {
     `;
 }
 
-/**
- * 🎛️ BUTON BASILDIĞINDA MİKTAR GÜNCELLEME
- */
-// ⚡ MİKTAR GÜNCELLEME VE OTOMATİK EKRAN TAZELEME MOTORU
 window.updateCatalogItemQty = function(menuId, index, change) {
-    // 1. İşlem yapılan menü nesnesini bul (Hafızadaki güncel state'i yakala)
     let targetMenu = null;
     
     if (window.allCatalogMenus) {
@@ -281,35 +252,42 @@ window.updateCatalogItemQty = function(menuId, index, change) {
         targetMenu = window.selectedCatalogMenu;
     }
 
-    // Güvenlik Kontrolü: Menü veya malzeme listesi yoksa çökmesini engelle
     if (!targetMenu || !targetMenu.ingredients || !targetMenu.ingredients[index]) {
         console.error("Hata: Değiştirilmek istenen menü veya malzeme datası bulunamadı!");
         return;
     }
 
-    // 2. Mevcut miktarı tam sayıya çevir ve gelen değişimi (+1 / -1) üzerine ekle
     let currentQty = parseInt(targetMenu.ingredients[index].quantity) || 0;
     currentQty += change;
 
-    // Negatif miktar olamayacağı için sıfırın altına düşmesini engelle
     if (currentQty < 0) currentQty = 0; 
 
-    // 3. Arka plandaki ana JavaScript nesnesinde değeri güncelle
     targetMenu.ingredients[index].quantity = currentQty;
     
-    // 4. 🚀 EKRANI GÜNCELLE: Sayfayı çizen ana fonksiyonu çağırarak yeni fiyatları bas!
     if (typeof renderMenusCatalogList === 'function') {
         renderMenusCatalogList(); 
     }
 };
 
-/**
- * 🛒 SEPETE GÖNDERME (cart.js & products.js entegrasyonu)
- */
 window.addCatalogMenuToCart = function() {
-    if (!window.selectedCatalogMenu) return;
+    let activeMenu = null;
+    
+    if (window.selectedCatalogMenu) {
+        if (window.allCatalogMenus) {
+            activeMenu = window.allCatalogMenus.find(m => m.id === window.selectedCatalogMenu.id);
+        }
+        
+        if (!activeMenu) {
+            activeMenu = window.selectedCatalogMenu;
+        }
+    }
 
-    const validIngredients = window.selectedCatalogMenu.ingredients.filter(i => i.quantity > 0);
+    if (!activeMenu) {
+        console.error("Hata: Sepete atılacak aktif menü referansı bulunamadı!");
+        return;
+    }
+
+    const validIngredients = activeMenu.ingredients.filter(i => i.quantity > 0);
 
     if (validIngredients.length === 0) {
         alert("Lütfen sepet için en az bir ürünün miktarını artırın!");
@@ -317,7 +295,6 @@ window.addCatalogMenuToCart = function() {
     }
 
     validIngredients.forEach(item => {
-        // products.js dosyasındaki global allProducts dizisinden gerçek ürünü arar
         const realProduct = (typeof allProducts !== 'undefined' && allProducts.length > 0)
             ? allProducts.find(p => p.name.toLowerCase().includes(item.name.toLowerCase()))
             : null;
@@ -325,12 +302,10 @@ window.addCatalogMenuToCart = function() {
         const finalQuantity = item.quantity;
 
         if (realProduct) {
-            // cart.js içindeki addToCart fonksiyonunu adet kadar döndürür
             for (let i = 0; i < finalQuantity; i++) {
                 if (typeof addToCart === "function") addToCart(realProduct.id);
             }
         } else {
-            // Sanal ürün mantığı
             const virtualId = Math.floor(30000 + Math.random() * 60000);
             const existingCartItem = cart.find(c => c.name.toLowerCase() === item.name.toLowerCase());
             
@@ -349,17 +324,17 @@ window.addCatalogMenuToCart = function() {
         }
     });
 
-    // cart.js içerisindeki yerel depolama tetikleyicileri
     if (typeof saveAndRefreshCart === "function") saveAndRefreshCart();
     else if (typeof saveCartToStorage === "function") saveCartToStorage();
 
-    alert(`🎉 "${window.selectedCatalogMenu.title}" sepetinize başarıyla fırlatıldı!`);
-    
-    // navigation.js üzerinden sepet sayfasına geçiş fırlatılır
+    if (typeof showToast === "function") {
+        showToast(`🎉 "${activeMenu.title}" malzemeleri sepetinize eklendi!`);
+    } else {
+        alert(`🎉 "${activeMenu.title}" içerisinden seçtiğiniz taze malzemeler sepetinize başarıyla fırlatıldı!`);
+    }
     if (typeof switchPage === "function") switchPage('cart');
 };
 
-// 🚀 Frontend'den Backend API'sine yorum gönderen fonksiyon
 async function submitCatalogComment(menuId) {
     const userInput = document.getElementById('comment-user');
     const textInput = document.getElementById('comment-text');
@@ -367,14 +342,12 @@ async function submitCatalogComment(menuId) {
     const user = userInput.value.trim();
     const text = textInput.value.trim();
 
-    // Validasyon kontrolü
     if (!user || !text) {
         alert('Lütfen adınızı ve yorumunuzu doldurun!');
         return;
     }
 
     try {
-        // Backend API rotamıza istek atıyoruz (Genelde BACKEND_API değişkeni projenizde tanımlıdır, yoksa url yazılabilir)
         const response = await fetch(`http://localhost:5000/api/menus/${menuId}/comments`, {
             method: 'POST',
             headers: {
@@ -388,13 +361,11 @@ async function submitCatalogComment(menuId) {
         if (data.success) {
             const commentsListDiv = document.getElementById('menu-comments-list');
             
-            // Eğer ilk defa yorum yapılıyorsa "Henüz yorum yapılmamış" yazısını temizle
             const noCommentsYet = commentsListDiv.querySelector('.no-comments-yet');
             if (noCommentsYet) {
                 noCommentsYet.remove();
             }
 
-            // Yeni yorum kutusunu oluşturup listeye anında ekliyoruz (Arayüz yenilenmeden)
             const newCommentHTML = `
                 <div class="bg-slate-800/40 p-2 rounded border border-slate-800 text-xs animation-fade-in">
                     <strong class="text-teal-400">${data.comment.user}:</strong> <span class="text-slate-300">${data.comment.text}</span>
@@ -403,10 +374,8 @@ async function submitCatalogComment(menuId) {
             
             commentsListDiv.insertAdjacentHTML('beforeend', newCommentHTML);
             
-            // Form alanlarını temizle
             textInput.value = '';
             
-            // Eğer istersen ana bellek nesnesini de güncel tutabilirsin:
             if(window.selectedCatalogMenu && window.selectedCatalogMenu.id === menuId) {
                 if(!window.selectedCatalogMenu.comments) window.selectedCatalogMenu.comments = [];
                 window.selectedCatalogMenu.comments.push({ user, text });
@@ -423,7 +392,6 @@ async function submitCatalogComment(menuId) {
 }
 
 window.toggleCatalogMenuLike = async function(menuId) {
-    // 1. Tarayıcıdan token'ı alıyoruz (Sen hangi key ile kaydettiysen 'token' yerine onu yaz)
     const token = localStorage.getItem('token'); 
 
     if (!token) {
@@ -433,7 +401,6 @@ window.toggleCatalogMenuLike = async function(menuId) {
 
     let activeUserId = null;
     try {
-        // 2. JWT Token'ın ortasındaki payload kısmını base64 ile çözüyoruz
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
@@ -442,7 +409,6 @@ window.toggleCatalogMenuLike = async function(menuId) {
 
         const decoded = JSON.parse(jsonPayload);
         
-        // 3. Token'ı üreten backend'in içine koyduğu id alanı (Genelde decoded.id veya decoded.userId olur)
         activeUserId = decoded.id || decoded.userId || decoded.sub; 
     } catch (e) {
         console.error("Token çözülemedi:", e);
@@ -453,7 +419,6 @@ window.toggleCatalogMenuLike = async function(menuId) {
         return;
     }
 
-    // Hafızadaki menüyü bulup o anki beğeni durumuna (isLiked) bakıyoruz
     const foundMenu = window.allCatalogMenus?.find(m => Number(m.id) === Number(menuId));
     const isAlreadyLiked = foundMenu && (foundMenu.isLiked === 1 || foundMenu.isLiked === true);
     
@@ -467,7 +432,7 @@ window.toggleCatalogMenuLike = async function(menuId) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userId: activeUserId }) // Backend'e kullanıcının ID'sini geçiyoruz
+                body: JSON.stringify({ userId: activeUserId })
             }
         );
 
@@ -478,12 +443,11 @@ window.toggleCatalogMenuLike = async function(menuId) {
             return;
         }
 
-        // Global hafızayı backend'den gelen yeni sayılarla tazeleyin
         if (window.allCatalogMenus) {
             const m = window.allCatalogMenus.find(m => Number(m.id) === Number(menuId));
             if (m) {
                 m.likes = data.likes;
-                m.isLiked = data.isLiked; // true veya false
+                m.isLiked = data.isLiked;
             }
         }
 
@@ -492,7 +456,6 @@ window.toggleCatalogMenuLike = async function(menuId) {
             window.selectedCatalogMenu.isLiked = data.isLiked;
         }
 
-        // 🚀 Ekranı yeniden çizdirerek kalbi doldur veya boşalt
         if (typeof renderMenusCatalogList === 'function') {
             renderMenusCatalogList();
         }

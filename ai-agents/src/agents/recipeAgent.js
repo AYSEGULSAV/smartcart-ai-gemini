@@ -1,5 +1,4 @@
 async function processRecipeAgent(currentInventory, dbSample) {
-    // Sadece hafıza ve envanter eşleştirme talimatını döner
     return `
     [Agent: RecipeAgent]
     Kullanıcının ev envanteri hafızasını al: ${JSON.stringify(currentInventory)}.

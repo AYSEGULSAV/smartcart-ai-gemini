@@ -1,3 +1,6 @@
 backend/.env
 backend/node_modules/
 node_modules/
+ai-agents/.env
+ai-agents/node_modules/
+backend/data/database.sqlite

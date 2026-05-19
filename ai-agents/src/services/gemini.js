@@ -6,7 +6,6 @@ if (!process.env.GEMINI_API_KEY) {
     process.exit(1);
 }
 
-// En güncel Google Gen AI SDK başlatma standardı
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 module.exports = ai;

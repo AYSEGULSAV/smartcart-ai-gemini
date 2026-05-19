@@ -1,4 +1,3 @@
-// 3. Aktivite ve Sepet Güncellemeleri
 function addToCart(productId) {
     const item = allProducts.find(p => p.id === productId);
     if (!item) return;
@@ -19,15 +18,12 @@ function updateQuantity(productId, amount) {
 function saveAndRefreshCart() {
     localStorage.setItem('smartcart_cart', JSON.stringify(cart));
     updateCartUI();
-    // 🧠 ENTEGRASYON NOKTASI: Sepet her değiştiğinde ajanları otomatik uyar!
-    //askAiAssistant();
 }
 
 function loadCartFromStorage() {
     const stored = localStorage.getItem('smartcart_cart');
     if (stored) cart = JSON.parse(stored);
     updateCartUI();
-    //if(cart.length > 0) askAiAssistant();
 }
 
 function updateCartUI() {
@@ -68,14 +64,12 @@ function updateCartUI() {
     });
     document.getElementById('cart-total').innerText = `${totalPrice.toFixed(2)} TL`;
 }
-// 🛒 Siparişi Kesin Olarak Tamamlama ve Tabloya Anlık Gönderme Fonksiyonu
 function checkout() {
     if (!cart || cart.length === 0) {
         alert("Sepetiniz boş!");
         return;
     }
 
-    // 🌟 orders.js'deki mantıkla birebir aynı kullanıcı adını buluyoruz
     let userName = 'default_user';
     let userStorage = localStorage.getItem('userName') || localStorage.getItem('username') || localStorage.getItem('user');
     if (userStorage) {
@@ -104,11 +98,9 @@ function checkout() {
     userOrders.unshift(newOrder);
     localStorage.setItem(userOrdersKey, JSON.stringify(userOrders));
 
-    // Sepeti temizle
     cart = [];
     if (typeof saveAndRefreshCart === 'function') saveAndRefreshCart();
 
-    // Sayfayı değiştir
     if (typeof switchPage === 'function') {
         switchPage('orders');
     } else {
@@ -116,15 +108,12 @@ function checkout() {
         document.getElementById('page-orders').classList.remove('hidden');
     }
 
-    // Tabloyu zorunlu güncelle
     if (typeof renderOrders === 'function') {
         renderOrders();
     }
 }
 
 
-
-// Global kapsama açmayı unutmayalım
 window.checkout = checkout;
 window.addToCart = addToCart;
 window.updateQuantity = updateQuantity;

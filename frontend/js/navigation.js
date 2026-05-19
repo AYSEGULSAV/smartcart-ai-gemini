@@ -1,4 +1,3 @@
-// 🧭 SPA Sayfa Geçişleri
 function switchPage(pageId) {
     const token = localStorage.getItem('token');
     
@@ -12,16 +11,13 @@ function switchPage(pageId) {
         loadCatalogMenus(); 
     }
 
-    // Tüm sayfaları gizle
     document.querySelectorAll('.page-section').forEach(section => section.classList.add('hidden'));
     
-    // İstenen sayfayı görünür yap
     const targetPage = document.getElementById(`page-${pageId}`);
     if (targetPage) {
         targetPage.classList.remove('hidden');
     }
 
-    // 🌟 YENİ: Kullanıcı Siparişlerim sayfasına geçtiyse listeyi dinamik olarak hesapla ve yenile
     if (pageId === 'orders' && typeof renderOrders === 'function') {
         renderOrders();
     }
@@ -77,3 +73,29 @@ function addHubMissingToCart() {
 // Global kapsam tanımlamaları
 window.switchPage = switchPage;
 window.addHubMissingToCart = addHubMissingToCart;
+
+(function() {
+    const originalSwitchPage = window.switchPage;
+
+    if (typeof originalSwitchPage === 'function') {
+        window.switchPage = function(pageId) {
+            // 1. Orijinal fonksiyonunu bozmadan çalıştır
+            originalSwitchPage(pageId);
+
+            // 2. 🌟 SEKMELERİN İÇİNİ DOLDUR VE YAZIYI BEYAZ YAP
+            document.querySelectorAll('.nav-link').forEach(btn => {
+                const isCurrent = btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${pageId}'`);
+                
+                if (isCurrent) {
+                    // Aktif Sekme: İçini yeşille doldur, yazıyı beyaz yap, çerçeveyi belirginleştir
+                    btn.classList.remove('text-slate-500', 'font-semibold', 'bg-transparent', 'border-transparent');
+                    btn.classList.add('text-white', 'font-bold', 'bg-emerald-600', 'border-emerald-600');
+                } else {
+                    // Pasif Sekmeler: İçini boşalt, yazıyı gri yap, çerçeveyi gizle
+                    btn.classList.remove('text-white', 'font-bold', 'bg-emerald-600', 'border-emerald-600');
+                    btn.classList.add('text-slate-500', 'font-semibold', 'bg-transparent', 'border-transparent');
+                }
+            });
+        };
+    }
+})();

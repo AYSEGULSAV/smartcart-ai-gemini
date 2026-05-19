@@ -1,4 +1,3 @@
-// 🛒 1. Backend'den Ürünleri Çekme
 async function fetchProducts() {
     try {
         const response = await fetch(`${BACKEND_API}/products`);
@@ -25,10 +24,9 @@ async function fetchProducts() {
     }
 }
 
-// 2. Ürünleri Reyonlara Göre Ekrana Basma
 function renderProducts() {
     const grid = document.getElementById('products-grid');
-    if (!grid) return; // Güvenlik kontrolü
+    if (!grid) return;
     grid.innerHTML = '';
     const filtered = currentCategory === 'Tümü' ? allProducts : allProducts.filter(p => p.category === currentCategory);
     
@@ -43,14 +41,13 @@ function renderProducts() {
             </div>
             <div class="mt-4 flex items-center justify-between">
                 <span class="text-lg font-extrabold text-emerald-600">${product.price.toFixed(2)} TL</span>
-                <button onclick="addToCart(${product.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-xl text-sm font-medium transition"><i class="fa-solid fa-plus"></i> Ekle</button>
+                <button onclick="addToCart(${product.id})" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:bg-emerald-700 text-white p-2 rounded-xl text-sm font-medium transition"><i class="fa-solid fa-plus"></i> Ekle</button>
             </div>
         `;
         grid.appendChild(card);
     });
 }
 
-// 🧭 Kategori Filtreleme Fonksiyonu
 function filterCategory(category) {
     currentCategory = category;
     document.querySelectorAll('#category-filters button').forEach(btn => {
@@ -62,7 +59,6 @@ function filterCategory(category) {
     renderProducts();
 }
 
-// Global kapsamdan çağrılabilmesi için window objesine bağlıyoruz
 window.fetchProducts = fetchProducts;
 window.renderProducts = renderProducts;
 window.filterCategory = filterCategory;

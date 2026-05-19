@@ -6,12 +6,10 @@ function openAuthModal(type = 'login') {
 
 function closeAuthModal() {
     document.getElementById('auth-modal').classList.add('hidden');
-    // 🌟 ÇÖZÜM 2: Modal kapatıldığında formların içindeki tüm yazıları temizle
     clearAuthForms();
 }
 
 function toggleAuthForm(type) {
-    // 🌟 ÇÖZÜM 2: Formlar arasında geçiş yaparken de eski yazılanları temizle
     clearAuthForms();
 
     if (type === 'login') {
@@ -23,7 +21,6 @@ function toggleAuthForm(type) {
     }
 }
 
-// 🌟 YENİ YARDIMCI FONKSİYON: Tüm input alanlarını sıfırlar
 function clearAuthForms() {
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
@@ -32,8 +29,6 @@ function clearAuthForms() {
     if (registerForm) registerForm.reset();
 }
 
-// Kayıt ve Giriş İsteklerini Yöneten Fonksiyon
-// Kayıt ve Giriş İsteklerini Yöneten Fonksiyon
 async function handleAuth(event, type) {
     event.preventDefault();
     
@@ -73,21 +68,18 @@ async function handleAuth(event, type) {
                 checkAuthStatus();
                 closeAuthModal();
                 
-                // 🌟 ALERT YERİNE: Sol altta şık bir hoş geldin bildirimi göster
                 showToast(`👋 Hoş geldiniz, ${result.user.name}!`);
             } else {
-                // 🌟 ALERT YERİNE: Giriş yapabilirsiniz mesajı ver ve login formuna at
                 clearAuthForms();
                 toggleAuthForm('login'); 
                 
-                // Kayıt formundaki bilgilendirme yazısını güncelle
                 const loginTitle = document.querySelector('#login-form-container h2');
                 if (loginTitle) {
                     loginTitle.innerHTML = 'Giriş Yap <br><span class="text-xs font-normal text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md block mt-1 border border-emerald-200">🎉 Kayıt başarılı! Giriş yapabilirsiniz.</span>';
                 }
             }
         } else {
-            alert(result.message || "Bir hata oluştu."); // Hatalar için alert kalabilir veya özelleştirilebilir
+            alert(result.message || "Bir hata oluştu.");
         }
     } catch (error) {
         console.error("Auth Hatası:", error);
@@ -95,25 +87,20 @@ async function handleAuth(event, type) {
     }
 }
 
-// 🌟 YENİ: Ekranda küçük modern bildirim penceresi (Toast) gösterme fonksiyonu
 function showToast(message) {
-    // Varsa eski toast'ı temizle
     document.getElementById('custom-toast')?.remove();
 
     const toast = document.createElement('div');
     toast.id = 'custom-toast';
-    // Sol alt köşede şık, yeşil ağırlıklı modern bir tasarım
     toast.className = 'fixed bottom-5 left-5 bg-slate-900 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-xl z-50 flex items-center gap-2 border border-slate-800 transition-all duration-300 transform translate-y-10 opacity-0';
     toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> <span>${message}</span>`;
     
     document.body.appendChild(toast);
 
-    // Animasyonla yukarı kaydırarak göster
     setTimeout(() => {
         toast.classList.remove('translate-y-10', 'opacity-0');
     }, 10);
 
-    // 3 saniye sonra otomatik kaldır
     setTimeout(() => {
         toast.classList.add('translate-y-10', 'opacity-0');
         setTimeout(() => { toast.remove(); }, 300);
@@ -121,7 +108,6 @@ function showToast(message) {
 }
 
 
-// Kullanıcı Giriş Durumunu Kontrol Eden ve Arayüzü Güncelleyen Fonksiyon
 function checkAuthStatus() {
     const authContainer = document.getElementById('auth-status-container');
     if (!authContainer) return;
@@ -130,7 +116,6 @@ function checkAuthStatus() {
     const userName = localStorage.getItem('userName');
 
     if (token && userName) {
-        // GİRİŞ YAPILDIYSA: İsmini göster ve Şık bir Çıkış Yap butonu ekle
         authContainer.innerHTML = `
             <div class="flex items-center gap-3">
                 <span class="text-sm font-semibold text-slate-700 hidden sm:inline"><i class="fa-solid fa-circle-user text-emerald-500 mr-1"></i> ${userName}</span>
@@ -140,48 +125,36 @@ function checkAuthStatus() {
             </div>
         `;
         
-        // Kullanıcı giriş yaptıysa hoş geldiniz ekranından çıkartıp markete yönlendir
         const welcomeSection = document.getElementById('page-welcome');
         if (welcomeSection && !welcomeSection.classList.contains('hidden')) {
             switchPage('market');
         }
     } else {
-        // GİRİŞ YAPILMDIYSA: Standart Giriş Yap Butonunu Geri Getir
         authContainer.innerHTML = `
             <button onclick="openAuthModal('login')" id="nav-auth-btn" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-4 py-2 rounded-xl transition flex items-center gap-2">
                 <i class="fa-solid fa-user"></i> <span id="nav-auth-text">Giriş Yap</span>
             </button>
-        `;
-        
-        // Oturum yoksa zorunlu olarak hoş geldiniz ekranını göster
+        `;    
         switchPage('welcome');
     }
 }
 
-// Oturumu Tamamen Sonlandıran ve Ana Sayfaya Yönlendiren Fonksiyon
-// Oturumu Tamamen Sonlandıran ve Ana Sayfaya Yönlendiren Fonksiyon
 function handleLogout() {
-    // 1. Tarayıcı hafızasındaki token ve kullanıcı verilerini tamamen temizle
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     
-    // Çıkış yapıldığında sepeti hem hafızadan hem de ekrandan tamamen temizle
     localStorage.removeItem('smartcart_cart'); 
     cart = [];
     updateCartUI();
 
-    // Chat hub geçmişini ve ajan envanterini de sonraki kullanıcı için temizliyoruz
     chatHistory = [];
     hubSavedInventory = [];
     currentHubMissingItems = [];
 
-    // 🌟 ALERT YERİNE: Modern bildirim göster
     showToast("🚪 Oturumunuz sonlandırıldı. Ana sayfaya yönlendiriliyorsunuz...");
     
-    // 2. Arayüzü güncelle ve kullanıcıyı ana sayfaya (welcome) fırlat
     checkAuthStatus();
 }
-// Global kapsam tanımlamaları
 window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
 window.toggleAuthForm = toggleAuthForm;

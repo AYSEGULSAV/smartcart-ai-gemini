@@ -4,12 +4,10 @@ async function sendHubMessage() {
     const userText = inputEl.value.trim();
     if (!userText) return;
 
-    // 1. Kullanıcı mesajını ekrana bas ve geçmişe ekle
     appendMessageHTML('User', userText);
     chatHistory.push({ role: 'user', parts: [{ text: userText }] });
     inputEl.value = '';
 
-    // Ekranda yükleniyor simülasyonu göster
     const messagesBox = document.getElementById('chat-messages-box');
     if (!messagesBox) return;
     const loadingId = 'ai-loading-bubble';
@@ -22,39 +20,32 @@ async function sendHubMessage() {
     messagesBox.scrollTop = messagesBox.scrollHeight;
 
     try {
-        // 2. Çoklu Ajan Merkezine (Port 5001) İstek Atılıyor
         const response = await fetch('http://localhost:5001/api/assistant/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 messages: chatHistory,
                 currentInventory: hubSavedInventory,
-                dbSample: allProducts.slice(0, 20) // Gramaj ve fiyat şeması eşleşmesi için ilk 20 ürünü gönderiyoruz
+                dbSample: allProducts.slice(0, 20)
             })
         });
 
         const resData = await response.json();
         
-        // Yükleniyor balonunu kaldır
         document.getElementById(loadingId)?.remove();
 
         if (resData.success && resData.data) {
             const agentOutput = resData.data;
 
-            // 3. Hafızayı Güncelle (RecipeAgent'ın yeni state'i)
             hubSavedInventory = agentOutput.evEnvanteri || [];
             currentHubMissingItems = agentOutput.missingItems || [];
 
-            // 4. Arayüz Güncellemeleri
-            // Chatbot cevabını ekrana bas
             appendMessageHTML('AI', agentOutput.assistantReply);
             chatHistory.push({ role: 'model', parts: [{ text: agentOutput.assistantReply }] });
 
-            // Sağ Kontrol Odasını Güncelle (EventAgent & RecipeAgent UI)
             document.getElementById('hub-active-concept').innerText = agentOutput.activeConcept || "Belirlenmedi";
             document.getElementById('hub-proposed-menu').innerText = agentOutput.proposedMenu || "Önerilen Paket";
             
-            // Ev Envanteri Rozetlerini Bas
             const invContainer = document.getElementById('hub-home-inventory');
             if (invContainer) {
                 invContainer.innerHTML = '';
@@ -67,7 +58,6 @@ async function sendHubMessage() {
                 }
             }
 
-            // Eksik Malzemeleri ve Porsiyon Notlarını Sağ Panele Diz (PortionAgent UI)
             const missingContainer = document.getElementById('hub-missing-items-list');
             if (missingContainer) {
                 missingContainer.innerHTML = '';
@@ -111,7 +101,6 @@ async function sendHubMessage() {
     }
 }
 
-// Mesaj Baloncuğu Yaratma Yardımcısı
 function appendMessageHTML(sender, text) {
     const messagesBox = document.getElementById('chat-messages-box');
     if (!messagesBox) return;
@@ -130,6 +119,5 @@ function appendMessageHTML(sender, text) {
     messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
-// Global kapsam tanımlamaları
 window.sendHubMessage = sendHubMessage;
 window.appendMessageHTML = appendMessageHTML;
