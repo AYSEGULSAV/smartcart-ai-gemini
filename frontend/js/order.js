@@ -37,24 +37,33 @@ function renderOrders() {
     if (stateChanged) {
         localStorage.setItem(userOrdersKey, JSON.stringify(updatedOrders));
     }
+// ... (renderOrders fonksiyonunun üst kısmı aynen kalıyor) ...
 
     tableBody.innerHTML = '';
     updatedOrders.forEach(order => {
         const isDelivered = order.status === 'Teslim Edildi';
         const row = document.createElement('tr');
-        row.className = 'divide-y divide-slate-100 text-sm text-slate-600 hover:bg-slate-50 transition';
+        row.className = 'divide-y divide-slate-100 text-sm text-slate-600 hover:bg-indigo-50/20 transition-all duration-200';
+        
         row.innerHTML = `
-            <td class="p-4 font-bold text-slate-900">${order.id}</td>
-            <td class="p-4">${order.date}</td>
-            <td class="p-4 font-extrabold text-emerald-600">${order.total.toFixed(2)} TL</td>
-            <td class="p-4">
-                <span class="px-2.5 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 border ${
-                    isDelivered ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-amber-100 text-amber-800 border-amber-200 animate-pulse'
+            <td class="p-5 font-bold text-slate-900 tracking-wide">${order.id}</td>
+            <td class="p-5 font-medium text-slate-500">${order.date}</td>
+            <td class="p-5">
+                <span class="text-base font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                    ${order.total.toFixed(2)} TL
+                </span>
+            </td>
+            <td class="p-5 text-right pr-8">
+                <span class="px-3 py-1.5 rounded-2xl text-xs font-extrabold inline-flex items-center gap-1.5 shadow-sm border ${
+                    isDelivered 
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-emerald-400 shadow-emerald-500/10' 
+                    : 'bg-gradient-to-r from-amber-400 to-orange-500 text-white border-amber-300 shadow-amber-500/10 animate-pulse'
                 }">
-                    <i class="${isDelivered ? 'fa-solid fa-circle-check' : 'fa-solid fa-truck-ramp-box'}"></i>
+                    <i class="${isDelivered ? 'fa-solid fa-circle-check text-xs' : 'fa-solid fa-circle-notch animate-spin text-xs'}"></i>
                     ${order.status}
                 </span>
-            </td>`;
+            </td>
+        `;
         tableBody.appendChild(row);
     });
 }
