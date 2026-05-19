@@ -1,0 +1,307 @@
+[
+  {
+    "id": 1,
+    "title": "Fırında Sebzeli Tavuk Butları",
+    "description": "Hafta içi akşamları için hem pratik hem de yüksek proteinli, bütçe dostu akşam yemeği.",
+    "likes": 142,
+    "recipe": "Patatesleri ve soğanları elma dilim doğrayın. Geniş bir kapta zeytinyağı, salça, kekik ve sarımsak ile sos hazırlayın. Tavukları ve sebzeleri bu sosa bulayıp fırın tepsisine dizin. Önceden ısıtılmış 200°C fırında tavukların üzeri nar gibi kızarana kadar yaklaşık 40-45 dakika pişirin.",
+    "ingredients": [
+      {"name": "Patates (Kg)", "price": 20.00, "quantity": 1, "reason": "5 kişi için ana yemeğin yanında garnitür olarak 1 kg patates yeterli olacaktır."},
+      {"name": "Kuru Soğan (Kg)", "price": 18.50, "quantity": 1, "reason": "5 kişilik bir yemek için 1 kg kuru soğan yeterli olacaktır."},
+      {"name": "Kapya Biber (Kg)", "price": 60.00, "quantity": 1, "reason": "Yemeğe renk ve lezzet katması için 1 kg kapya biber."}
+    ],
+    "comments": [
+      {"user": "Ahmet K.", "text": "Patateslerin miktarını artırınca tam jüriye layık doyurucu bir menü oldu."},
+      {"user": "Selin Y.", "text": "Sosuna biraz sarımsak eklemenizi öneririm, harika!"}
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Kremalı Mantarlı Penne",
+    "description": "Öğrenci dostu, 15 dakikada hazırlayabileceğiniz enfes İtalyan lezzeti.",
+    "likes": 328,
+    "recipe": "Penne makarnaları bol tuzlu kaynar suda 9-10 dakika haşlayın. Makarna haşlanırken tavanıza az yağ alıp ince doğranmış mantarları soteleyin. Mantarlar suyunu çekince kremayı ekleyin ve kısık ateşte 2 dakika tıkırdatın. Haşlanan makarnaları süzüp doğrudan kremalı mantarlı sosa aktarın, karıştırıp sıcak servis yapın.",
+    "ingredients": [
+      {"name": "Penne Makarna (Paket)", "price": 15.00, "quantity": 2, "reason": "Geniş porsiyon 4 kişilik servis için 2 paket makarna."},
+      {"name": "Kültür Mantarı (Paket)", "price": 35.00, "quantity": 1, "reason": "Sosun ana gövdesini oluşturacak taze kültür mantarı."},
+      {"name": "Sıvı Krema (Kutu)", "price": 28.00, "quantity": 1, "reason": "Makarnayı bağlamak ve o ipeksi dokuyu yakalamak için."}
+    ],
+    "comments": [
+      {"user": "Mert A.", "text": "Aşırı hızlı hazırlanıyor, kurtarıcı paket."},
+      {"user": "Buse T.", "text": "Makarna severler kesinlikle kaçırmasın."}
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Ev Yapımı Pratik Burger Menüsü",
+    "description": "Dışarıdan söylemeye son! Çocukların ve genel olarak herkesin favorisi ev yapımı sağlıklı burger.",
+    "likes": 215,
+    "recipe": "Dana kıymayı tuz ve karabiberle çok az yoğurup 4 eşit parçaya bölün ve bastırarak yassı köfteler yapın. Kızgın döküm tavada köftelerin her iki yüzünü dörder dakika pişirin. Pişmeye yakın üzerlerine birer dilim peynir koyup eritin. Isıtılmış hamburger ekmeklerinin tabanına marul yerleştirip üzerine köfteleri koyarak birleştirin.",
+    "ingredients": [
+      {"name": "Dana Kıyma (Kg)", "price": 450.00, "quantity": 1, "reason": "4 adet dolgun burger köftesi çıkartmak için ideal miktar."},
+      {"name": "Hamburger Ekmeği (Paket)", "price": 40.00, "quantity": 1, "reason": "İçerisinde 4 adet taze susamlı hamburger ekmeği bulunur."},
+      {"name": "Kıvırcık Marul (Adet)", "price": 15.00, "quantity": 1, "reason": "Burgerin içine tazelik ve çıtırlık katacak yeşillik."}
+    ],
+    "comments": [
+      {"user": "Caner H.", "text": "Köfteyi döküm tavada pişirdim, efsane oldu."},
+      {"user": "Elif G.", "text": "Çocuklar bayıldı, dışarıdakilerden çok daha temiz."}
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Klasik Türk Kahvaltısı Paketi",
+    "description": "Pazar sabahlarını şenlendirecek, eksiksiz geleneksel kahvaltı malzemeleri.",
+    "likes": 512,
+    "recipe": "Yumurtaları isteğinize göre rafadan veya katı olacak şekilde haşlayın ya da hafif tereyağında göz yumurta olarak pişirin. Beyaz peyniri şık dilimler halinde kesin. Siyah zeytinleri hafifçe zeytinyağı ve kekik ile harmanlayarak tabağa alın. Yanına taze sıcacık bir ekmek dilimleyerek servise hazır hale getirin.",
+    "ingredients": [
+      {"name": "Yumurta (10lu)", "price": 45.00, "quantity": 1, "reason": "Kahvaltının başrolü, menemen ve haşlama için."},
+      {"name": "Beyaz Peynir (Gr)", "price": 120.00, "quantity": 1, "reason": "Tam yağlı, ezine lezzetinde kahvaltılık peynir."},
+      {"name": "Siyah Zeytin (Gr)", "price": 65.00, "quantity": 1, "reason": "Doğal salamura, az tuzlu kahvaltılık zeytin."}
+    ],
+    "comments": [
+      {"user": "Zeynep B.", "text": "Ürünler çok taze geldi, yumurtalar kırıksızdı."},
+      {"user": "Murat D.", "text": "Peynirin kalitesi gerçekten şaşırttı, çok başarılı."}
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Sağlıklı Akdeniz Salatası Menüsü",
+    "description": "Diyette olanlar veya hafif bir öğün geçirmek isteyenler için ideal yeşillik deposu.",
+    "likes": 98,
+    "recipe": "Salatalıkları alacalı soyup küp küp doğrayın. Domatesleri de benzer boyutlarda dilimleyin. Geniş bir salata kasesine doğradığınız sebzeleri alın. Üzerine zeytinyağı, limon ve az miktar tuz gezdirip harmanlayın. Son dokunuş olarak feta peynirini küpler halinde kesip salatanın üzerine serpiştirerek servis edin.",
+    "ingredients": [
+      {"name": "Çengelköy Salatalık (Kg)", "price": 30.00, "quantity": 1, "reason": "Çıtır çıtır taze Akdeniz salatasının temeli."},
+      {"name": "Domates (Kg)", "price": 25.00, "quantity": 1, "reason": "Sulu ve lezzetli tarla domatesi."},
+      {"name": "Feta Peyniri (Paket)", "price": 55.00, "quantity": 1, "reason": "Salatanın üzerine küp küp doğranacak eşsiz lezzet."}
+    ],
+    "comments": [
+      {"user": "Aslı T.", "text": "Üzerine biraz zeytinyağı ve limon ekleyince akşam yemeğim hazır oldu."},
+      {"user": "Arda E.", "text": "Sporcu öğünleri için harika bir altlık."}
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Anne Usulü Çorba & Makarna",
+    "description": "Geleneksel, iç ısıtan ve her evin kurtarıcısı olan akşam menüsü.",
+    "likes": 420,
+    "recipe": "Kırmızı mercimeği yıkayıp soğan ve patatesle tencereye alın, su ekleyip yumuşayana kadar haşlayıp blenderdan geçirin. Ayrı bir tavada kıymayı soğanla soteleyip salçalı bir sos hazırlayın. Haşladığınız burgu makarnayı süzüp bu kıymalı sosla buluşturun. Sıcak çorba ve kıymalı makarna kombinasyonunuz servise hazır.",
+    "ingredients": [
+      {"name": "Kırmızı Mercimek (Kg)", "price": 42.00, "quantity": 1, "reason": "Kıvamlı bir süzme mercimek çorbası için ana malzeme."},
+      {"name": "Burgu Makarna (Paket)", "price": 15.00, "quantity": 1, "reason": "Çorbanın yanına harika gidecek klasik makarna."},
+      {"name": "Dana Kıyma (Gr)", "price": 225.00, "quantity": 1, "reason": "Makarnanın sosunu zenginleştirmek için kıyma."}
+    ],
+    "comments": [
+      {"user": "Fatma Y.", "text": "Tam bir kış günü menüsü, çocukluğuma döndüm."}
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Zeytinyağlı Taze Fasulye Menüsü",
+    "description": "Geleneksel Türk mutfağından hafif ve sağlığa yararlı zeytinyağlı tencere yemeği.",
+    "likes": 110,
+    "recipe": "Fasulyeleri ayıklayıp uzunlamasına ikiye bölün. Geniş bir tencereye ince doğranmış kuru soğanları zeytinyağı ile alıp pembeleşene kadar soteleyin. Fasulyeleri ekleyip renkleri dönene kadar kavurun. Üzerine küp doğranmış bol domatesi, az tuz ve bir kesme şeker ekleyip tencerenin kapağını kapatın. Kısık ateşte kendi suyunda pişmeye bırakın.",
+    "ingredients": [
+      {"name": "Taze Fasulye (Kg)", "price": 70.00, "quantity": 1, "reason": "Kılçıksız, taze ayıklanmış zeytinyağlı fasulye."},
+      {"name": "Domates (Kg)", "price": 25.00, "quantity": 1, "reason": "Fasulyeyi kendi suyunda pişirmek için bol domates."},
+      {"name": "Kuru Soğan (Kg)", "price": 18.50, "quantity": 1, "reason": "Tabana güzel bir aroma ve tatlılık katması için."}
+    ],
+    "comments": [
+      {"user": "Hülya G.", "text": "Yaz aylarının vazgeçilmezi, tarif tam ölçülü."}
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Beşamel Soslu Fırın Makarna",
+    "description": "Altın sarısı kaşar kabuğuyla fırından yeni çıkmış enfes bir karbonhidrat şöleni.",
+    "likes": 280,
+    "recipe": "Fırın makarnayı bol tuzlu suda al dente kıvamında haşlayıp süzün. Sos tenceresinde tereyağı ve unu kavurup yavaşça süt ekleyerek pürüzsüz bir beşamel sos elde edin. Makarnayı beşamel sosla derin bir borcamda karıştırın. Üzerine rende kaşar peynirini bolca yayın ve 180°C fırında üzeri kızarana kadar fırınlayın.",
+    "ingredients": [
+      {"name": "Fırın Makarna (Paket)", "price": 18.00, "quantity": 1, "reason": "Kalın içi boş özel fırın makarna paket."},
+      {"name": "Süt (Litre)", "price": 32.00, "quantity": 1, "reason": "Beşamel sosun pürüzsüz kıvam alması için kullanılır."},
+      {"name": "Rende Kaşar (Gr)", "price": 75.00, "quantity": 1, "reason": "Üzerinin nar gibi kızarmasını sağlayacak peynir."}
+    ],
+    "comments": [
+      {"user": "Deniz S.", "text": "Beşamel sosa biraz muskat cevizi rendeleyin, çok yakışıyor."}
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Pratik Öğrenci Menemen Paketi",
+    "description": "Sınav haftalarının dostu, hızlı, ucuz ve tartışmasız en büyük lezzet.",
+    "likes": 640,
+    "recipe": "Tavaya az miktarda sıvı yağ alın ve ince kıyılmış sivri biberleri hafifçe soteleyin. Ardından küp doğranmış veya rendelenmiş domatesleri ekleyip, domatesler suyunu çekene kadar orta ateşte pişirin. Son olarak yumurtaları kırın, isteğe göre karıştırarak tavanın kapağını kapatın ve sulu kıvamda ocaktan alın.",
+    "ingredients": [
+      {"name": "Yumurta (6lı)", "price": 30.00, "quantity": 1, "reason": "Menemenin olmazsa olmaz bağlayıcı proteini."},
+      {"name": "Sivri Biber (Kg)", "price": 40.00, "quantity": 1, "reason": "Menemene o hafif acılığı ve diriliği verecek biber."},
+      {"name": "Domates (Kg)", "price": 25.00, "quantity": 1, "reason": "Bol sulu menemen sosu için 1 kg domates."}
+    ],
+    "comments": [
+      {"user": "Yusuf K.", "text": "Soğanlı mı soğansız mı tartışmasına girmeden direkt aldım, harika."}
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Ege Usulü Otlu Omlet Menüsü",
+    "description": "Güne zinde ve hafif başlamak isteyen fitness tutkunlarına özel kahvaltı.",
+    "likes": 155,
+    "recipe": "Bir kapta yumurtaları az tuz ekleyerek iyice çırpın. İncecik kıydığınız taze maydanozları ve lor peynirini yumurta karışımına ilave edip hafifçe spatulayla karıştırın. Yapışmaz teflon tavayı ısıtıp karışımı dökün. Arkalı önlü olacak şekilde, içi hafif nemli kalacak kıvamda pişirin.",
+    "ingredients": [
+      {"name": "Yumurta (10lu)", "price": 45.00, "quantity": 1, "reason": "Omletin ana gövdesi için taze yumurtalar."},
+      {"name": "Taze Maydanoz (Demet)", "price": 10.00, "quantity": 1, "reason": "İçine bolca doğranacak antioksidan deposu yeşillik."},
+      {"name": "Lor Peyniri (Gr)", "price": 40.00, "quantity": 1, "reason": "Yüksek protein, düşük yağ oranlı sporcu peyniri."}
+    ],
+    "comments": [
+      {"user": "Gökhan T.", "text": "Spor sonrası kahvaltımın vazgeçilmezi oldu, lor peyniri çok kaliteli."}
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Kıymalı Patates Oturtma",
+    "description": "Geleneksel fırın yemeklerimizin en sevilenlerinden, tam bir aile ziyafeti.",
+    "likes": 190,
+    "recipe": "Patatesleri soyup yuvarlak halkalar halinde doğrayın ve hafifçe yağlayıp fırın tepsisine dizerek 10 dakika ön pişirme yapın. Tavada kıymayı soğan, salça ve baharatlarla soteleyip sulu bir harç hazırlayın. Fırından çıkan patateslerin üzerine bu kıymalı harcı yayın ve tekrar fırına vererek patatesler tamamen lokum gibi olana dek pişirin.",
+    "ingredients": [
+      {"name": "Patates (Kg)", "price": 20.00, "quantity": 2, "reason": "Tepsinin tabanını kaplayacak halka patatesler için 2 kg."},
+      {"name": "Dana Kıyma (Gr)", "price": 450.00, "quantity": 1, "reason": "Patateslerin üzerine yayılacak lezzetli kıymalı harç."},
+      {"name": "Salça (Kutu)", "price": 50.00, "quantity": 1, "reason": "Yemeğin sosunu bağlayacak domates salçası."}
+    ],
+    "comments": [
+      {"user": "Merve U.", "text": "Sarımsaklı yoğurtla efsane gidiyor, tavsiye ederim."}
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Tavuklu Sebzeli Noodle",
+    "description": "Wok tavada yüksek ateşte hızlıca hazırlayabileceğiniz restoran usulü Noodle.",
+    "likes": 295,
+    "recipe": "Noodle makarnaları kaynar suda 4-5 dakika haşlayıp süzün. Geniş bir wok tavada jülyen doğranmış tavuk göğüslerini yüksek ateşte soteleyin. Şerit biberleri de ekleyip çıtırlığını kaybetmeyecek şekilde kavurmaya devam edin. Süzülen noodle'ları tavaya atın, bol soya sosu gezdirip 2 dakika her şeyi harmanlayarak ocaktan alın.",
+    "ingredients": [
+      {"name": "Noodle (Paket)", "price": 25.00, "quantity": 2, "reason": "Asya usulü hızlı pişen buğday makarnası."},
+      {"name": "Tavuk Göğsü (Kg)", "price": 140.00, "quantity": 1, "reason": "Jülyen doğranarak noodle'a eklenecek yüksek protein."},
+      {"name": "Soya Sosu (Şişe)", "price": 65.00, "quantity": 1, "reason": "Noodle'a o orijinal tuzlu ve karamelize tadı veren sos."}
+    ],
+    "comments": [
+      {"user": "Hakan C.", "text": "Dışarıda dünya para vermeye gerek yok, evde aynısı oluyor."}
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Nohut & Şehriyeli Pirinç Pilavı",
+    "description": "Milli akşam yemeği kombinasyonumuz, esnaf lokantası kalitesinde evinizde.",
+    "likes": 380,
+    "recipe": "Nohutları düdüklü tencerede yumuşayana kadar haşlayın. Pilav tenceresinde tereyağında arpa şehriyeleri rengi dönene kadar kavurun. Yıkanmış baldo pirinci ekleyip pirinçler parlayana kadar kavurmaya devam edin. Sıcak su ve tuzu ekleyip kısık ateşte demlendirin. Haşlanan nohutları salçalı hafif bir sosla pişirip pilavın yanında servis edin.",
+    "ingredients": [
+      {"name": "Koçbaşı Nohut (Kg)", "price": 55.00, "quantity": 1, "reason": "Geceden ıslatılıp lokum gibi pişecek nohut paketi."},
+      {"name": "Baldo Pirinç (Kg)", "price": 90.00, "quantity": 1, "reason": "Tane tane dökülen pilavlar için en kaliteli pirinç."},
+      {"name": "Arpa Şehriye (Paket)", "price": 15.00, "quantity": 1, "reason": "Pilava renk ve geleneksel lezzet katacak şehriye."}
+    ],
+    "comments": [
+      {"user": "Kemal T.", "text": "Nohutları düdüklüde pişirdim, tam kıvamında oldu."}
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Ev Yapımı Margarita Pizza",
+    "description": "İncecik hamuru ve uzayan peyniriyle evde pizza yapma deneyimi.",
+    "likes": 410,
+    "recipe": "Un, su, maya ve tuzu yoğurarak yumuşak bir pizza hamuru elde edin ve 30 dakika mayalandırın. Hamuru incecik olacak şekilde merdaneyle açın. Üzerine kekikle tatlandırılmış domates püresini yayın. Bolca rende kaşar peyniri serpiştirip 220°C ısıtılmış fırında tabanı ve peynirleri kızarana kadar pişirin.",
+    "ingredients": [
+      {"name": "Un (Kg)", "price": 28.00, "quantity": 1, "reason": "Pizza hamurunun mayalanması için temel malzeme."},
+      {"name": "Rende Kaşar (Gr)", "price": 75.00, "quantity": 2, "reason": "Bol peynirli bir pizza yüzeyi oluşturmak için 2 paket."},
+      {"name": "Domates Püresi (Kutu)", "price": 22.00, "quantity": 1, "reason": "Pizza tabanına sürülecek İtalyan kekikli sos tabanı."}
+    ],
+    "comments": [
+      {"user": "Seda V.", "text": "Hamur tarifi mükemmel tuttu, fırını en yüksek dereceye ayarlayın."}
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Fit ve Sağlıklı Yulaf Bowl",
+    "description": "Güne hafif, lifli ve uzun süre tok tutan bir başlangıç yapmak isteyenlere.",
+    "likes": 125,
+    "recipe": "Küçük bir sos tenceresine yulaf ezmesini ve sütü alın. Kısık ateşte yulaflar sütü çekip krema kıvamına gelene kadar sürekli karıştırarak 5 dakika pişirin. Hazırladığınız lapayı bir kaseye aktarın. Üzerini dilimlenmiş taze muzlar ve dilerseniz evdeki kuru yemişlerle süsleyerek sıcak veya ılık servis edin.",
+    "ingredients": [
+      {"name": "Yulaf Ezmesi (Paket)", "price": 35.00, "quantity": 1, "reason": "Lif kaynağı, kahvaltı kaselerinin ana malzemesi."},
+      {"name": "Süt (Litre)", "price": 32.00, "quantity": 1, "reason": "Yulafı pişirmek veya soğuk ıslatmak için."},
+      {"name": "Muz (Kg)", "price": 45.00, "quantity": 1, "reason": "Kaseyi doğal yoldan tatlandıracak taze meyve."}
+    ],
+    "comments": [
+      {"user": "Dilan R.", "text": "İçine biraz tarçın ve fıstık ezmesi ekleyince harika oluyor."}
+    ]
+  },
+  {
+    "id": 16,
+    "title": "Havuçlu Tarçınlı Kek Menüsü",
+    "description": "Misafirleriniz geldiğinde evi mis gibi kokutacak en garanti kek tarifi.",
+    "likes": 260,
+    "recipe": "Yumurtaları ve şekeri mikserle beyazlaşana kadar çırpın. Unu eleyerek karışıma ekleyin. En son ince rendelenmiş havuçları ve bol tarçını ekleyip spatulayla söndürmeden karıştırın. Yağlanmış kek kalıbına harcı dökün ve 175°C fırında yaklaşık 35-40 dakika, içi kürdan testinden temiz çıkana kadar pişirin.",
+    "ingredients": [
+      {"name": "Un (Kg)", "price": 28.00, "quantity": 1, "reason": "Kekin kabarmasını sağlayacak ana un yapısı."},
+      {"name": "Yumurta (6lı)", "price": 30.00, "quantity": 1, "reason": "Keke süngerimsi dokuyu verecek taze yumurtalar."},
+      {"name": "Havuç (Kg)", "price": 20.00, "quantity": 1, "reason": "İçine rendelenecek nemlilik ve tatlılık veren havuç."}
+    ],
+    "comments": [
+      {"user": "Nihan S.", "text": "Ceviz de ekledim içi nemli, dışı çıtır harika bir kek oldu."}
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Izgara Köfte & Patates Şöleni",
+    "description": "Hafta sonu kaçamaklarının, çocukların ve büyüklerin asla hayır diyemeyeceği menü.",
+    "likes": 530,
+    "recipe": "Dana kıymayı rendelenmiş soğan, ekmek içi ve baharatlarla en az 10 dakika özleşene kadar yoğurun ve köfte şekli vererek dolapta dinlendirin. Patatesleri parmak şeklinde doğrayıp kızgın yağda altın sarısı olana kadar kızartın. Dinlenen köfteleri ve biberleri kızgın döküm tavada arkalı önlü cızbız pişirip patateslerle sıcak servis edin.",
+    "ingredients": [
+      {"name": "Dana Kıyma (Kg)", "price": 450.00, "quantity": 1, "reason": "Anne köftesi lezzetinde harç hazırlamak için 1 kg."},
+      {"name": "Patates (Kg)", "price": 20.00, "quantity": 2, "reason": "Yanına bolca anne usulü patates kızartması yapmak için 2 kg."},
+      {"name": "Sivri Biber (Kg)", "price": 40.00, "quantity": 1, "reason": "Köftenin yanında közlenecek sulu biberler."}
+    ],
+    "comments": [
+      {"user": "Tolgahan K.", "text": "Döküm tavada ızgara tadında oldu, patatesler çıtır çıtır."}
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Ton Balıklı Sporcu Salatası",
+    "description": "Yemek yapmaya vakti olmayan ama temiz beslenmek isteyenlerin hızlı protein deposu.",
+    "likes": 310,
+    "recipe": "Kıvırcık marulları güzelce yıkayıp süzün ve elinizle büyük parçalar halinde salata kasesine doğrayın. Üzerine konserve mısır tanelerini serpiştirin. Konserve ton balığının yağını hafifçe süzerek salatanın tam ortasına yerleştirin. İsteğe göre zeytinyağı ve limon gezdirerek çok hırpalamadan karıştırın.",
+    "ingredients": [
+      {"name": "Ton Balığı (2li Konserve)", "price": 85.00, "quantity": 1, "reason": "Salatanın üzerine eklenecek omega-3 ve protein kaynağı."},
+      {"name": "Kıvırcık Marul (Adet)", "price": 15.00, "quantity": 1, "reason": "Salatanın yeşil taze tabanını kurmak için."},
+      {"name": "Konserve Mısır (Paket)", "price": 25.00, "quantity": 1, "reason": "Salataya tatlılık ve renk katacak mısır taneleri."}
+    ],
+    "comments": [
+      {"user": "Engin Ö.", "text": "Antrenman sonrası 5 dakikada hazırlıyorum, aşırı pratik."}
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Geleneksel Mercimek Köftesi",
+    "description": "Çay saatlerinin, günlerin ve pikniklerin vazgeçilmez yerli atıştırmalığı.",
+    "likes": 470,
+    "recipe": "Kırmızı mercimeği bol suda iyice yumuşayana kadar haşlayın. Ateşi kapatıp içine ince bulguru ekleyin, tencerenin kapağını kapatıp bulgurların şişmesini bekleyin. Tavada salçalı, soğanlı bir yağlı harç hazırlayıp mercimeğe yedirin. İyice yoğurup elinizle sıkarak şekil verin ve marul yaprakları üzerinde servis edin.",
+    "ingredients": [
+      {"name": "Kırmızı Mercimek (Kg)", "price": 42.00, "quantity": 1, "reason": "Köftenin ana gövdesini oluşturacak mercimek."},
+      {"name": "Köftelik İnce Bulgur (Kg)", "price": 35.00, "quantity": 1, "reason": "Mercimeğin sıcağıyla şişip kıvam alacak ince bulgur."},
+      {"name": "Kıvırcık Marul (Adet)", "price": 15.00, "quantity": 2, "reason": "Köfteleri içine sarıp yemek için 2 adet taze marul."}
+    ],
+    "comments": [
+      {"user": "Pınar A.", "text": "Tam ölçülü tarif, sulu kalmıyor, kıvamı tam sıkımlık."}
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Domates Çorbası & Kaşarlı Tost",
+    "description": "Yağmurlu günlerde içinizi ısıtacak, yapımı kolay nefis bir akşamüstü menüsü.",
+    "likes": 390,
+    "recipe": "Domatesleri rendeleyip az tereyağı ve unla kokusu çıkana kadar kavurun, ardından su ve yavaşça süt ekleyerek pürüzsüzleşene kadar çırpıp kaynatın. Çorba kaynarken tost ekmeklerinin arasına bolca kaşar peyniri koyup tost makinesinde çıtır tostlar hazırlayın. Çorbanın üzerine kaşar rendesi serpiştirip tostu yanında banarak tüketin.",
+    "ingredients": [
+      {"name": "Domates (Kg)", "price": 25.00, "quantity": 1, "reason": "Közlenerek veya rendelenerek çorba yapılacak domates."},
+      {"name": "Süt (Litre)", "price": 32.00, "quantity": 1, "reason": "Çorbanın asidini kırıp kadifemsi bir tat vermek için."},
+      {"name": "Rende Kaşar (Gr)", "price": 75.00, "quantity": 1, "reason": "Çorbanın üzerine ve tost ekmeğinin arasına eriyecek peynir."}
+    ],
+    "comments": [
+      {"user": "Umut E.", "text": "Çorbanın içine kaşar rendeleyip tostu banarak yedik, mükemmel kombinasyon."}
+    ]
+  }
+]

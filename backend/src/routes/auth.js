@@ -58,6 +58,10 @@ router.post('/login', (req, res) => {
             token: token,
             user: { id: user.id, name: user.name, email: user.email }
         });
+        if (typeof loadCatalogMenus === 'function') {
+            // Kataloğu yeni kullanıcı ID'siyle backend'den sıfırdan çekmesi için tetikliyoruz
+            loadCatalogMenus(); 
+        }
     });
 });
 

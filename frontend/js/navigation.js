@@ -8,6 +8,9 @@ function switchPage(pageId) {
         openAuthModal('login');
         return;
     }
+    if (pageId === 'promotions') {
+        loadCatalogMenus(); 
+    }
 
     // Tüm sayfaları gizle
     document.querySelectorAll('.page-section').forEach(section => section.classList.add('hidden'));
