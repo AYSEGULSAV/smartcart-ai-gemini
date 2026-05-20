@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 5001;
 async function getAIResponse(systemInstruction, userMessages) {
     // Listeden doğruladığımız en yeni ve uygun modeli kullanıyoruz
     const model = genAI.getGenerativeModel({ 
-        model: "models/gemini-3.5-flash", 
+        model: "models/gemini-2.5-flash", 
         systemInstruction: systemInstruction 
     });
 
