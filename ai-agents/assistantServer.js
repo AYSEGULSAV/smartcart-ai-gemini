@@ -16,6 +16,45 @@ app.use(express.json());
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const PORT = process.env.PORT || 5001;
 
+// 🏎️ IŞIK HIZINDA PARALEL MODEL ORKESTRASYON MOTORU
+async function generateContentWithFallback(aiInstance, baseConfig) {
+    console.log("⚡ [AI Hub] Modeller paralel olarak ateşleniyor, ilk başarıyla dönen kazanacak...");
+
+    // Model 1: Gemini 2.5 Flash İstek Paketi
+    const request25 = aiInstance.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: baseConfig.contents,
+        config: baseConfig.config
+    }).then(res => ({ model: 'gemini-2.5-flash', response: res }));
+
+    // Model 2: Gemini 1.5 Flash İstek Paketi (Hızlı Yedek)
+    const request15 = aiInstance.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: baseConfig.contents,
+        config: baseConfig.config
+    }).then(res => ({ model: 'gemini-1.5-flash', response: res }));
+
+    try {
+        // Promise.any: İçlerinden HATA ALMAYAN ve İLK cevap veren modeli yakalar!
+        const winner = await Promise.any([request25, request15]);
+        console.log(`✅ [AI Hub] Yarışı kazanan ve ekrana basılan model: ${winner.model}`);
+        return winner.response;
+
+    } catch (aggregateError) {
+        // Eğer iki hızlı model de o an küresel yoğunluktan (503) çöktüyse, son çare Pro modeli dene
+        console.warn("⚠️ [AI Hub] İki hızlı model de yoğunluk döndü. Son çare 'gemini-1.5-pro' deneniyor...");
+        try {
+            return await aiInstance.models.generateContent({
+                model: 'gemini-1.5-pro',
+                contents: baseConfig.contents,
+                config: baseConfig.config
+            });
+        } catch (finalError) {
+            throw new Error("Tüm Google API sunucuları şu an servis dışı.");
+        }
+    }
+}
+
 app.post('/api/assistant/chat', async (req, res) => {
     try {
         const { messages, currentInventory, dbSample } = req.body;
@@ -46,9 +85,8 @@ app.post('/api/assistant/chat', async (req, res) => {
         }
         `;
 
-        // 3. Modeli çağırıyoruz. KONTROL: 'contents' kısmına artık chat geçmişini de ekledik!
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+        // 3. Paralel motor için ortak veri paketini (payload) hazırlıyoruz
+        const baseConfig = {
             contents: [
                 { role: 'user', parts: [{ text: "Lütfen aşağıdaki konuşma geçmişini ve envanteri analiz et, ardından sadece belirtilen JSON formatında yanıt üret." }] },
                 ...messages
@@ -57,16 +95,21 @@ app.post('/api/assistant/chat', async (req, res) => {
                 systemInstruction: masterSystemInstruction, 
                 responseMimeType: "application/json" 
             }
-        });
+        };
 
+        // 🚀 Çoklu model motorunu ateşliyoruz
+        const response = await generateContentWithFallback(ai, baseConfig);
+
+        // Gelen temiz JSON çıktısını parse edip frontend'e uçuruyoruz
         res.json({ success: true, data: JSON.parse(response.text.trim()) });
+
     } catch (error) {
         console.error("Orkestrasyon sunucu hatası:", error);
         res.status(500).json({ success: false, error: "Ajanlar arasında bir iletişim hatası oluştu." });
     }
 });
 
-// 4. EKSİK OLAN LİSTEN FONKSİYONU: Sunucunun ayağa kalkmasını sağlar
+// 4. Sunucunun ayağa kalkmasını sağlar
 app.listen(PORT, () => {
     console.log(`================================================================`);
     console.log(`🧠 [SmartCart AI Hub] Modüler Multi-Agent Sunucusu Port:${PORT} üzerinde aktif!`);

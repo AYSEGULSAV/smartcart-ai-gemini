@@ -4,6 +4,7 @@ async function sendHubMessage() {
     const userText = inputEl.value.trim();
     if (!userText) return;
 
+    // 1. Kullanıcı mesajını ekrana bas ve hafızaya ekle
     appendMessageHTML('User', userText);
     chatHistory.push({ role: 'user', parts: [{ text: userText }] });
     inputEl.value = '';
@@ -11,12 +12,13 @@ async function sendHubMessage() {
     const messagesBox = document.getElementById('chat-messages-box');
     if (!messagesBox) return;
     const loadingId = 'ai-loading-bubble';
-    messagesBox.innerHTML += `
+    
+    messagesBox.insertAdjacentHTML('beforeend', `
         <div id="${loadingId}" class="flex gap-3 max-w-[85%]">
-            <div class="bg-slate-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 animate-spin">AI</div>
+            <div class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 animate-spin">AI</div>
             <div class="bg-white border border-slate-200 p-3 rounded-2xl shadow-sm text-slate-400 italic">Ajanlar aralarında tartışıyor...</div>
         </div>
-    `;
+    `);
     messagesBox.scrollTop = messagesBox.scrollHeight;
 
     try {
@@ -43,9 +45,25 @@ async function sendHubMessage() {
             appendMessageHTML('AI', agentOutput.assistantReply);
             chatHistory.push({ role: 'model', parts: [{ text: agentOutput.assistantReply }] });
 
-            document.getElementById('hub-active-concept').innerText = agentOutput.activeConcept || "Belirlenmedi";
-            document.getElementById('hub-proposed-menu').innerText = agentOutput.proposedMenu || "Önerilen Paket";
+            const conceptEl = document.getElementById('hub-active-concept-text');
+            if (conceptEl) {
+                conceptEl.innerText = agentOutput.activeConcept || "Belirlenmedi";
+            }
             
+            // Menü başlığını güncelle
+            const menuEl = document.getElementById('hub-proposed-menu');
+            if (menuEl) {
+                menuEl.innerText = agentOutput.proposedMenu || "Önerilen Paket";
+            }
+            
+            const recipeBox = document.getElementById('hub-menu-recipe-box');
+            const allIngredientsEl = document.getElementById('hub-menu-all-ingredients');
+            if (recipeBox && allIngredientsEl && agentOutput.missingItems) {
+                recipeBox.classList.remove('hidden');
+                const ingredientNames = agentOutput.missingItems.map(i => i.name).join(', ');
+                allIngredientsEl.innerText = ingredientNames || "Gerekli malzeme bulunamadı.";
+            }
+
             const invContainer = document.getElementById('hub-home-inventory');
             if (invContainer) {
                 invContainer.innerHTML = '';
@@ -53,7 +71,11 @@ async function sendHubMessage() {
                     invContainer.innerHTML = '<span class="text-xs text-slate-400 italic">Ev envanteri boş.</span>';
                 } else {
                     hubSavedInventory.forEach(item => {
-                        invContainer.innerHTML += `<span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded-md border border-amber-200"><i class="fa-solid fa-circle-check"></i> ${item}</span>`;
+                        invContainer.insertAdjacentHTML('beforeend', `
+                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded-md border border-amber-200">
+                                <i class="fa-solid fa-circle-check"></i> ${item}
+                            </span>
+                        `);
                     });
                 }
             }
@@ -88,16 +110,20 @@ async function sendHubMessage() {
                     });
                 }
 
-                document.getElementById('hub-missing-total').innerText = `${totalCost.toFixed(2)} TL`;
+                // Toplam fiyatı güncelle
+                const totalEl = document.getElementById('hub-missing-total');
+                if (totalEl) {
+                    totalEl.innerText = `${totalCost.toFixed(2)} TL`;
+                }
             }
 
         } else {
-            throw new Error("Ajanlar geçersiz format döndü.");
+            throw new Error("Ajanlar geçersiz veya boş bir format döndü.");
         }
     } catch (error) {
         document.getElementById(loadingId)?.remove();
         console.error("Chat hub hatası:", error);
-        appendMessageHTML('AI', "⚠️ Ajan hub sunucusuyla bağlantı kurulamadı. Lütfen Port 5001 sunucunuzun açık olduğundan emin olun.");
+        appendMessageHTML('AI', "⚠️ Ajan hub sunucusuyla bağlantı kurulamadı. Lütfen Port 5001 sunucunuzun açık olduğundan ve API anahtarınızın doğruluğundan emin olun.");
     }
 }
 
@@ -110,7 +136,7 @@ function appendMessageHTML(sender, text) {
     bubble.className = `flex gap-3 max-w-[85%] ${isAi ? '' : 'ml-auto justify-end'}`;
     bubble.innerHTML = `
         ${isAi ? '<div class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">AI</div>' : ''}
-        <div class="${isAi ? 'bg-white border border-slate-200 text-slate-700' : 'bg-emerald-600 text-white'} p-3 rounded-2xl shadow-sm">
+        <div class="${isAi ? 'bg-white border border-slate-200 text-slate-700' : 'bg-emerald-600 text-white'} p-3 rounded-2xl shadow-sm leading-relaxed">
             ${text}
         </div>
         ${isAi ? '' : '<div class="bg-slate-300 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">SEN</div>'}
