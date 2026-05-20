@@ -72,6 +72,7 @@ async function handleAuth(event, type) {
             } else {
                 clearAuthForms();
                 toggleAuthForm('login'); 
+                showToast("🎉 Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz.");
                 
                 const loginTitle = document.querySelector('#login-form-container h2');
                 if (loginTitle) {
@@ -79,7 +80,7 @@ async function handleAuth(event, type) {
                 }
             }
         } else {
-            alert(result.message || "Bir hata oluştu.");
+           showToast(`⚠️ ${result.message || "Bir hata oluştu."}`);
         }
     } catch (error) {
         console.error("Auth Hatası:", error);
@@ -92,7 +93,8 @@ function showToast(message) {
 
     const toast = document.createElement('div');
     toast.id = 'custom-toast';
-    toast.className = 'fixed bottom-5 left-5 bg-slate-900 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-xl z-50 flex items-center gap-2 border border-slate-800 transition-all duration-300 transform translate-y-10 opacity-0';
+    
+    toast.className = `fixed bottom-5 left-5 bg-slate-900 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-2xl z-[9999] flex items-center gap-2 border border-slate-700 transition-all duration-300 transform translate-y-10 opacity-0`;
     toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> <span>${message}</span>`;
     
     document.body.appendChild(toast);

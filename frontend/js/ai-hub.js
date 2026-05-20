@@ -144,6 +144,63 @@ function appendMessageHTML(sender, text) {
     messagesBox.appendChild(bubble);
     messagesBox.scrollTop = messagesBox.scrollHeight;
 }
+function resetHubSession() {
+    console.log("🛠️ Sıfırlama fonksiyonu tetiklendi!");
 
+    // 1. Global hafıza değişkenlerini temizle
+    chatHistory = [];
+    hubSavedInventory = [];
+    currentHubMissingItems = [];
+    
+    // Test: Gerçekten elemana erişebiliyor muyuz?
+    const testEl = document.getElementById('chat-messages-box');
+    if (!testEl) {
+        console.error("❌ 'chat-messages-box' ID'li eleman bulunamadı!");
+        return; 
+    }
+    
+    // 2. Mesaj kutusunu temizle ve ilk hoş geldin mesajını yerleştir
+    testEl.innerHTML = `
+        <div class="flex gap-3 max-w-[85%]">
+            <div class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">AI</div>
+            <div class="bg-white border border-slate-200 p-3 rounded-2xl shadow-sm text-slate-700">
+                Merhaba! Bu akşam nasıl bir organizasyon planlıyorsunuz? Kaç kişi geleceğini ve evdeki malzemelerinizi yazın, eksikleri porsiyonlayıp sepetinizi hazırlayayım!
+            </div>
+        </div>
+    `;
+
+    // 3. Giriş input alanını temizle
+    const inputEl = document.getElementById('chat-user-input');
+    if (inputEl) inputEl.value = '';
+
+    // 4. Ajan Hafıza Durumu panelini sıfırla
+    const conceptEl = document.getElementById('hub-active-concept-text');
+    if (conceptEl) conceptEl.innerText = "Konsept Bekleniyor...";
+
+    const invContainer = document.getElementById('hub-home-inventory');
+    if (invContainer) invContainer.innerHTML = '<span class="text-xs text-slate-400 italic">Henüz malzeme kaydedilmedi.</span>';
+
+    // 5. Önerilen Menü ve Tarif alanını sıfırla
+    const menuEl = document.getElementById('hub-proposed-menu');
+    if (menuEl) menuEl.innerText = "Önerilen Menü";
+
+    const recipeBox = document.getElementById('hub-menu-recipe-box');
+    if (recipeBox) recipeBox.classList.add('hidden');
+
+    const allIngredientsEl = document.getElementById('hub-menu-all-ingredients');
+    if (allIngredientsEl) allIngredientsEl.innerText = "Menü içeriği bekleniyor...";
+
+    // 6. Eksik Malzemeler Listesini ve Toplam Tutarı sıfırla
+    const missingContainer = document.getElementById('hub-missing-items-list');
+    if (missingContainer) missingContainer.innerHTML = '<p class="text-slate-500 text-sm py-4 text-center">Eksik listesi çıkartılmadı.</p>';
+
+    const totalEl = document.getElementById('hub-missing-total');
+    if (totalEl) totalEl.innerText = "0.00 TL";
+
+    console.log("🧹 [Sepetle Ai] Tüm oturum verileri ve arayüz başarıyla sıfırlandı.");
+}
+
+// Global scope'a bağlama (En altta bir kere tanımlayın)
+window.resetHubSession = resetHubSession;
 window.sendHubMessage = sendHubMessage;
 window.appendMessageHTML = appendMessageHTML;

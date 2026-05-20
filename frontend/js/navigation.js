@@ -66,6 +66,10 @@ function addHubMissingToCart() {
     // Ana sepeti güncelle ve render et
     saveAndRefreshCart();
     showToast(`🎉 Ajanların hazırladığı ve sizin güncellediğiniz tüm eksik ürünler sepetinize başarıyla fırlatıldı!`);
+
+    if (typeof window.resetHubSession === 'function') {
+        window.resetHubSession();
+    }
     switchPage('cart'); // Kullanıcıyı gerçek sepet sayfasına uçurur
 }
 

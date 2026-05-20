@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { GoogleGenAI } = require('@google/genai');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// Modüler Ajanlarımızın fonksiyonlarını içeri aktarıyoruz
+// Ajanları içeri aktar
 const { processEventAgent } = require('./src/agents/eventAgent');
 const { processRecipeAgent } = require('./src/agents/recipeAgent');
 const { processPortionAgent } = require('./src/agents/portionAgent');
@@ -12,59 +12,40 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Gemini SDK'sını başlatıyoruz
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Yeni ve kararlı SDK kurulumu
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const PORT = process.env.PORT || 5001;
 
-// 🏎️ IŞIK HIZINDA PARALEL MODEL ORKESTRASYON MOTORU
-async function generateContentWithFallback(aiInstance, baseConfig) {
-    console.log("⚡ [AI Hub] Modeller paralel olarak ateşleniyor, ilk başarıyla dönen kazanacak...");
-
-    // Model 1: Gemini 2.5 Flash İstek Paketi
-    const request25 = aiInstance.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: baseConfig.contents,
-        config: baseConfig.config
-    }).then(res => ({ model: 'gemini-2.5-flash', response: res }));
-
-    // Model 2: Gemini 1.5 Flash İstek Paketi (Hızlı Yedek)
-    const request15 = aiInstance.models.generateContent({
-        model: 'gemini-1.5-flash',
-        contents: baseConfig.contents,
-        config: baseConfig.config
-    }).then(res => ({ model: 'gemini-1.5-flash', response: res }));
+// Basitleştirilmiş, kararlı AI fonksiyonu
+async function getAIResponse(systemInstruction, userMessages) {
+    // Listeden doğruladığımız en yeni ve uygun modeli kullanıyoruz
+    const model = genAI.getGenerativeModel({ 
+        model: "models/gemini-3.5-flash", 
+        systemInstruction: systemInstruction 
+    });
 
     try {
-        // Promise.any: İçlerinden HATA ALMAYAN ve İLK cevap veren modeli yakalar!
-        const winner = await Promise.any([request25, request15]);
-        console.log(`✅ [AI Hub] Yarışı kazanan ve ekrana basılan model: ${winner.model}`);
-        return winner.response;
-
-    } catch (aggregateError) {
-        // Eğer iki hızlı model de o an küresel yoğunluktan (503) çöktüyse, son çare Pro modeli dene
-        console.warn("⚠️ [AI Hub] İki hızlı model de yoğunluk döndü. Son çare 'gemini-1.5-pro' deneniyor...");
-        try {
-            return await aiInstance.models.generateContent({
-                model: 'gemini-1.5-pro',
-                contents: baseConfig.contents,
-                config: baseConfig.config
-            });
-        } catch (finalError) {
-            throw new Error("Tüm Google API sunucuları şu an servis dışı.");
-        }
+        const result = await model.generateContent({
+            contents: userMessages,
+            generationConfig: { responseMimeType: "application/json" }
+        });
+        
+        return result.response.text();
+    } catch (error) {
+        console.error("❌ Model çağrısı başarısız:", error);
+        throw error;
     }
 }
-
 app.post('/api/assistant/chat', async (req, res) => {
     try {
         const { messages, currentInventory, dbSample } = req.body;
 
-        // 1. Ajan fonksiyonlarını çağırarak alt alta prompt talimatlarını hazırlıyoruz
+        // 1. Ajan talimatlarını al
         const eventInstruction = await processEventAgent(messages);
         const recipeInstruction = await processRecipeAgent(currentInventory, dbSample);
         const portionInstruction = await processPortionAgent();
 
-        // 2. Ajanların kişiliklerini ve katı çıktı kurallarını tek bir ana orkestrasyon talimatında birleştiriyoruz
+        // 2. Ana talimatı oluştur
         const masterSystemInstruction = `
         Sen SmartCart orkestrasyon merkezisin. Aşağıdaki 3 ajanın talimatlarını sırayla işle:
         ${eventInstruction}
@@ -72,46 +53,56 @@ app.post('/api/assistant/chat', async (req, res) => {
         ${portionInstruction}
         
         [KATI ÇIKTI KURALI]
-        Sadece ve sadece aşağıdaki JSON şablonunu döndür. Markdown etiketleri (\`\`\`json gibi), açıklama veya yorum satırı asla ekleme. Doğrudan süslü parantez ile başla ve bitir. Cevap dilin tamamen Türkçe olmalı.
-
+        Sadece geçerli bir JSON döndür. Başka hiçbir açıklama, Markdown veya yorum satırı ekleme.
         {
-            "assistantReply": "Kullanıcıya hitap eden sıcak şef yanıtı.",
+            "assistantReply": "Sıcak şef yanıtı.",
             "activeConcept": "Konsept ve kişi sayısı",
             "proposedMenu": "Yemek adı",
-            "evEnvanteri": ["Güncel evdeki malzemeler listesi"],
+            "evEnvanteri": ["Malzeme 1"],
             "missingItems": [
-                { "name": "Ürün adı", "price": 0.0, "category": "Kategori", "quantity": 1, "reason": "Porsiyon açıklaması" }
+                { "name": "Ürün", "price": 0.0, "category": "Kategori", "quantity": 1, "reason": "Açıklama" }
             ]
-        }
-        `;
+        }`;
 
-        // 3. Paralel motor için ortak veri paketini (payload) hazırlıyoruz
-        const baseConfig = {
-            contents: [
-                { role: 'user', parts: [{ text: "Lütfen aşağıdaki konuşma geçmişini ve envanteri analiz et, ardından sadece belirtilen JSON formatında yanıt üret." }] },
-                ...messages
-            ],
-            config: { 
-                systemInstruction: masterSystemInstruction, 
-                responseMimeType: "application/json" 
-            }
-        };
+        // 3. Mesajları hazırla
+        const formattedMessages = [
+            { role: "user", parts: [{ text: "Analiz et ve JSON yanıt üret." }] },
+            ...messages
+        ];
 
-        // 🚀 Çoklu model motorunu ateşliyoruz
-        const response = await generateContentWithFallback(ai, baseConfig);
-
-        // Gelen temiz JSON çıktısını parse edip frontend'e uçuruyoruz
-        res.json({ success: true, data: JSON.parse(response.text.trim()) });
+        // 4. AI'ı çağır
+        const rawResponse = await getAIResponse(masterSystemInstruction, formattedMessages);
+        
+const cleanedJson = rawResponse.trim().replace(/```json|```/g, '');
+        res.json({ success: true, data: JSON.parse(cleanedJson) });
 
     } catch (error) {
-        console.error("Orkestrasyon sunucu hatası:", error);
-        res.status(500).json({ success: false, error: "Ajanlar arasında bir iletişim hatası oluştu." });
+        console.error("Orkestrasyon hatası:", error);
+        res.status(500).json({ success: false, error: "AI servis hatası." });
     }
 });
 
-// 4. Sunucunun ayağa kalkmasını sağlar
+// Sadece bir kez çalışacak model listeleme fonksiyonu
+async function checkAvailableModels() {
+    try {
+        console.log("🔍 API'den gelen mevcut modeller sorgulanıyor...");
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${process.env.GEMINI_API_KEY}`);
+        const data = await response.json();
+        
+        if (data.models) {
+            console.log("✅ API'nizin erişebildiği modeller:");
+            data.models.forEach(m => console.log("- " + m.name));
+        } else {
+            console.log("❌ Modeller listelenemedi. Yanıt:", data);
+        }
+    } catch (err) {
+        console.error("❌ Listeleme hatası:", err);
+    }
+}
+
+// Sunucu başlarken listeyi konsola döksün
+checkAvailableModels();
 app.listen(PORT, () => {
-    console.log(`================================================================`);
-    console.log(`🧠 [SmartCart AI Hub] Modüler Multi-Agent Sunucusu Port:${PORT} üzerinde aktif!`);
-    console.log(`================================================================`);
+    console.log(`🧠 [SmartCart AI Hub] Sunucu ${PORT} üzerinde aktif!`);
 });
+

@@ -286,7 +286,11 @@ window.addCatalogMenuToCart = function() {
         console.error("Hata: Sepete atılacak aktif menü referansı bulunamadı!");
         return;
     }
+window.activeMenuId = null; // Aktif menüyü bellekten sil
+    renderMenusCatalogList();   // Listeyi yeniden çiz (her şey kapalı gelecektir)
+    // --------------------------
 
+    if (typeof switchPage === "function") switchPage('cart');
     const validIngredients = activeMenu.ingredients.filter(i => i.quantity > 0);
 
     if (validIngredients.length === 0) {
