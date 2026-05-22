@@ -1,4 +1,4 @@
-# 🛒 Sepetle AI (Formerly SmartCart AI)
+# 🛒 Sepetle AI
 
 Yapay zeka destekli, otonom ajan entegrasyonlu yeni nesil akıllı e-ticaret ve hızlı teslimat platformu. 
 
