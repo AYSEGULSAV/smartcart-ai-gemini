@@ -7,7 +7,7 @@ Sepetle AI, geleneksel market alışverişi süreçlerini modern LLM (Large Lang
 ---
 ## 📺 Proje Sunum Videosu
 
-<video src="GITHUB_DAN_ALDIGIN_VIDEO_LINKI_BURAYA.mp4" controls width="100%" poster="https://raw.githubusercontent.com/placehold-co/placehold/800x450/2c2c2c/ffffff?text=Sepetle+AI+Sunum+Videosu">
+<video src="./SepetleAI.mp4" controls width="100%">
   Tarayıcınız video etiketini desteklemiyor.
 </video>
 
