@@ -7,9 +7,7 @@ Sepetle AI, geleneksel market alışverişi süreçlerini modern LLM (Large Lang
 ---
 ## 📺 Proje Sunum Videosu
 
-<video src="./SepetleAI.mp4" controls width="100%">
-  Tarayıcınız video etiketini desteklemiyor.
-</video>
+![Sepetle AI Sunum Videosu](./SepetleAI.mp4)
 
 ## 🚀 Öne Çıkan Özellikler
 
