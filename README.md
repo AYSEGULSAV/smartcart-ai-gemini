@@ -38,7 +38,7 @@ Sepetle AI, geleneksel market alışverişi süreçlerini modern LLM (Large Lang
 
 ### 1. Projeyi Klonlayın
 ```bash
-git clone [https://github.com/AYSEGULSAV/smartcart-ai-gemini.git](https://github.com/AYSEGULSAV/smartcart-ai-gemini.git)
+git clone https://github.com/AYSEGULSAV/smartcart-ai-gemini.git
 cd sepetle-ai-gemini
 ```
 Projenin mikroservis yapısı gereği, ilgili servislerin klasörleri altında ortam değişkenlerinin ayrı ayrı tanımlanması gerekmektedir:
